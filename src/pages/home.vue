@@ -1,62 +1,97 @@
 <template>
   <div class="home">
-    <header>
-      <div class="logo"></div>
+    <div class="ad">
+      广告
+    </div>
+    <header id="live" >
     </header>
     <section>
       <div class="nav">
-        <dl v-for="item of list" :key="item.name" @click="goto(item.path)">
-          <dd :class="item.icon">
-            <i class=""></i>
-          </dd>
-          <dt>{{item.name}}</dt>
-        </dl>
+        <ul>
+          <li :class="{active:idx===index}" v-for="(item, index) of list" :key="index" @click="goto(item.path, index)">
+            {{item.name}}
+          </li>
+        </ul>
       </div>
+      <router-view class="bg"></router-view>
     </section>
-    <router-view class="bg"></router-view>
+    <footer>
+      <div class="emoji" ref="emoji" v-html="html">
+      </div>
+      <div @click="handle">
+        对对对<br>
+        八方
+      </div>
+    </footer>
+    <!-- <remote :type="'js'" :url="remotejs" :js-load-call-back="loadRemoteJs"></remote> -->
+    <remote :type="'css'" :url="remotecss"></remote>
   </div>
 </template>
 
 <script>
+import remote from './components/remote'
 export default {
   name: 'home',
+  components: {
+    remote
+  },
   data () {
     return {
+      idx: 0,
       list: [
         {
-          icon: 'icon university',
-          name: '上大学',
-          path: 'university'
+          name: '图文直播',
+          path: ''
         },
         {
-          icon: 'icon treatment',
-          name: '医疗互助',
-          path: 'treatment'
+          name: '互动聊天',
+          path: ''
         },
         {
-          icon: 'icon rest',
-          name: '疗休养',
-          path: 'rest'
+          name: '活动介绍',
+          path: ''
         },
         {
-          icon: 'icon award',
-          name: '高技能人才奖励',
-          path: 'award'
-        },
-        {
-          icon: 'icon stage',
-          name: '爱心驿家',
-          path: 'stage'
+          name: '往期活动',
+          path: ''
         }
-      ]
+      ],
+      html: 'default',
+      remotejs: 'https://g.alicdn.com/de/prismplayer/2.7.2/aliplayer-h5-min.js',
+      remotecss: 'https://g.alicdn.com/de/prismplayer/2.7.2/skins/default/aliplayer-min.css'
     }
   },
   methods: {
-    goto (path) {
+    goto (path, i) {
+      this.idx = i
       this.$router.push({
         path
       })
+    },
+    loadRemoteJs () {
+      var player = new Aliplayer({ //eslint-disable-line
+        id: 'live',
+        source: 'https://xsgbdst.oss-cn-shanghai.aliyuncs.com/zhxs/20170512mqjjfjx.mp4',
+        width: '100%',
+        height: '500px',
+        autoplay: true,
+        isLive: false,
+        rePlay: false,
+        playsinline: true,
+        preload: true,
+        controlBarVisibility: 'hover',
+        useH5Prism: true
+      },
+      function (player) {
+      })
+    },
+    handle () {
+      this.html += '<img src="https://res.wx.qq.com/mpres/htmledition/images/icon/emotion/1.gif"/>'
     }
+  },
+  mounted () {
+    this.$refs.emoji.contentEditable = true
+    this.handle()
   }
 }
 </script>
@@ -71,65 +106,34 @@ export default {
   right 0
   bottom 0
   overflow-y auto
+  .ad
+    height 1.6rem
+    background #dddddd
   header
-    padding-top 50%
-    background url('~@/assets/imgs/header.png')no-repeat
-    background-size cover
+    padding-top 56%
+    height 0 !important
+    border-bottom 1px solid #dddddd
   section
     flex 1
     .nav
-      display grid
-      grid-template-columns 1fr 1fr
-      padding .5rem 0
-      dl
+      ul
         display flex
-        flex-direction column
-        justify-content center
-        align-items center
-        padding .2rem 0
-        dd
-          width 1.8rem
-          height 1.8rem
-          border-radius 50%
-          display flex
-          justify-content center
-          align-items center
-          i
-            width 1rem
-            height 1rem
-            background url('')no-repeat
-            background-size contain
-            background-position center center
-        .university
-          background-color #e00024
-          i
-            background-image url('~@/assets/imgs/icon1.png')
-        .treatment
-          background-color #00b034
-          i
-            background-image url('~@/assets/imgs/icon2.png')
-        .rest
-          background-color #ff8a00
-          i
-            background-image url('~@/assets/imgs/icon3.png')
-        .award
-          background-color #01a8ec
-          i
-            background-image url('~@/assets/imgs/icon4.png')
-        .stage
-          background-color #f59fbc
-          i
-            background-image url('~@/assets/imgs/icon5.png')
-        .else
-          background-color #dadada
-          i
-            background-image url('~@/assets/imgs/icon6.png')
-        dt
-          text-align center
+        li
+          flex 1
+          height 1rem
+          line-height 1rem
           font-size .32rem
-          line-height 2
-          color #777
-  .bg
-    background url('~@/assets/imgs/bg.png')no-repeat
-    background-size cover
+          text-align center
+          color #444
+          border-bottom 2px solid transparent
+          box-sizing border-box
+        .active
+          color red
+          border-bottom-color red
+  footer
+    background #cccccc
+    .emoji
+      width 3rem
+      min-height 1rem
+      background #fff
 </style>
