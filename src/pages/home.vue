@@ -53,11 +53,6 @@ export default {
           path: 'university'
         },
         {
-          icon: 'icon treatment',
-          name: '医疗互助',
-          path: 'treatment'
-        },
-        {
           icon: 'icon rest',
           name: '疗休养',
           path: 'rest'
