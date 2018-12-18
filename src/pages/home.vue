@@ -4,6 +4,7 @@
       广告
     </div>
     <header id="live" >
+      <player></player>
     </header>
     <section>
       <div class="nav">
@@ -24,16 +25,18 @@
       </div>
     </footer>
     <!-- <remote :type="'js'" :url="remotejs" :js-load-call-back="loadRemoteJs"></remote> -->
-    <remote :type="'css'" :url="remotecss"></remote>
+    <!-- <remote :type="'css'" :url="remotecss"></remote> -->
   </div>
 </template>
 
 <script>
-import remote from './components/remote'
+// import remote from './components/remote'
+import player from './components/player'
 export default {
   name: 'home',
   components: {
-    remote
+    // remote
+    player
   },
   data () {
     return {
@@ -69,21 +72,6 @@ export default {
       })
     },
     loadRemoteJs () {
-      var player = new Aliplayer({ //eslint-disable-line
-        id: 'live',
-        source: 'https://xsgbdst.oss-cn-shanghai.aliyuncs.com/zhxs/20170512mqjjfjx.mp4',
-        width: '100%',
-        height: '500px',
-        autoplay: true,
-        isLive: false,
-        rePlay: false,
-        playsinline: true,
-        preload: true,
-        controlBarVisibility: 'hover',
-        useH5Prism: true
-      },
-      function (player) {
-      })
     },
     handle () {
       this.html += '<img src="https://res.wx.qq.com/mpres/htmledition/images/icon/emotion/1.gif"/>'
