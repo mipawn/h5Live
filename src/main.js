@@ -5,9 +5,10 @@ import App from './App'
 import router from './router'
 import './assets/css/reset.css'
 import JSBridge from './assets/js/SZJSBridge'
+import fastclick from 'fastclick'
+
 Vue.use(JSBridge)
-// import 'https://g.alicdn.com/de/prismplayer/2.7.2/aliplayer-h5-min.js'
-// import 'https://g.alicdn.com/de/prismplayer/2.7.2/skins/default/aliplayer-min.css'
+fastclick.attach(document.body)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
