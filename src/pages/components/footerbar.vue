@@ -1,20 +1,24 @@
 <template>
   <div class="footer">
-    <div class="main-position">
+    <div class="main-position" contenteditable="true">
       <div class="main">
-        <div class="left">
-          <div class="content" contenteditable="true" ref="content" @blur="contentBlur" @click="contentFoucs">
-            <span class="text" ref="focus" v-html="content"></span>
+        <div :class="'left' + (isWriting ? ' writing' : '')" @blur="contentBlur" >
+          <div class="content" ref="content" v-html="content"
+            @focus="startWrite">
           </div>
-        </div>
-        <div class="right">
-          <div class="emoji" @click="showPackage"></div>
+          <div class="emoji" @click="showPackage">表情</div>
+          <div class="send" @click="sendComment">发送</div>
           <div class="emoji-package" v-if="show">
             <img :src="'https://res.wx.qq.com/mpres/htmledition/images/icon/emotion/' + n + '.gif'"
-              alt="" v-for="n in 20" :key="n" @click="addImage">
+              alt="" v-for="n in 20" :key="n" @click="addImage" />
           </div>
-          <div class="collection"></div>
-          <div class="share"></div>
+        </div>
+        <div class="center" @click="contentFoucs" v-show="!isWriting">
+          <p>写评论</p>
+        </div>
+        <div class="right" v-show="!isWriting">
+          <div class="collection">收藏</div>
+          <div class="share">分享</div>
         </div>
       </div>
     </div>
@@ -26,27 +30,51 @@ export default {
   name: 'footerbar',
   data () {
     return {
-      content: 'default',
+      content: '',
+      preContent: '写评论',
       show: false,
-      range: {},
-      selection: {}
+      range: '',
+      selection: '',
+      isWriting: false
     }
   },
   methods: {
     showPackage () {
+      if (!this.selection) {
+        this.$refs.content.focus()
+      } else {
+        this.range && this.selection.removeAllRanges() && this.selection.addRange(this.range)
+      }
       this.show = !this.show
-      this.selection.removeAllRanges()
-      this.selection.addRange(this.range)
     },
     contentBlur () {
+      console.log(999)
+      this.range = this.selection.getRangeAt(0)
+      this.isWriting = false
+      if (this.content) {
+        this.preContent = '草稿' + this.content
+      }
+      // console.log(this.range)
+    },
+    startWrite () {
+      if (!this.selection) {
+        this.selection = document.getSelection()
+        this.range = this.selection.getRangeAt(0)
+      } else {
+        console.log(this.selection)
+        // this.range && this.selection.removeAllRanges() && this.selection.addRange(this.range)
+      }
     },
     contentFoucs (e) {
-      let node = e.target
-      this.selection = document.getSelection()
-      this.range = this.selection.getRangeAt(0)
-      if (node.tagName === 'IMG') {
-        this.setCursor(node, e.offsetX < node.width / 2)
-      }
+      this.isWriting = true
+      console.log(document.getSelection().getRangeAt(0))
+      this.$refs.content.focus()
+      // let node = e ? e.target : {}
+      // this.selection = document.getSelection()
+      // this.range = this.selection.getRangeAt(0)
+      // if (node.tagName === 'IMG') {
+      //   this.setCursor(node, e.offsetX < node.width / 2)
+      // }
     },
     addImage (e) {
       let node = e.target.cloneNode(true)
@@ -61,62 +89,44 @@ export default {
       this.selection.removeAllRanges()
       this.selection.addRange(range)
       this.range = this.selection.getRangeAt(0)
-    }
+      console.log(this.range)
+    },
+    sendComment () {}
   },
   mounted () {
+    // this.range = document.createRange()
   }
 }
 </script>
 
 <style lang="stylus" scoped>
 .footer
-  background #cccccc
   position fixed
-  top calc(100% - 1rem)
+  // top calc(100% - 1rem)
+  bottom 0
   left 0
   width 100%
   .main-position
-    height 1rem
+    height .8rem
+    line-height .8rem
     position relative
     .main
       display flex
-      // box-shadow 0 0 20px rgba(0,0,0,.4)
-      border-top 1px solid #ddd
-      min-height 1rem
+      border-top 1px solid #eee
+      height 100%
       position absolute
       width 100%
       bottom 0
       background #fff
       align-items flex-end
-      .left
+      div.writing
         flex 1
+      .left
+        flex 0
+        display flex
         background #ffffff
         overflow hidden
-        align-self flex-start
-        .content
-          background #fff
-          width 100%
-          min-height 100%
-          outline none
-          padding .1rem
-          box-sizing border-box
-          .text
-            padding-bottom .1rem
-            font-size .32rem
-            line-height 1.5
-            img
-              width 1.5em
-              object-fit cover
-              vertical-align bottom
-            // border-bottom 1px solid #444
-      .right
-        width 3rem
-        background #888
-        display flex
-        height 1rem
         position relative
-        >div
-          width 1rem
         .emoji-package
           border-top 1px solid #ddd
           position absolute
@@ -131,8 +141,48 @@ export default {
           align-items center
         .emoji
           background #f00
-        .collection
-          background #0ff
-        .share
-          background #f0f
+          float right
+        .content
+          flex 1
+          background #fff
+          width 100%
+          min-height 100%
+          outline none
+          padding 0 .2rem
+          box-sizing border-box
+          .text
+            padding-bottom .1rem
+            font-size .32rem
+            line-height 1.5
+            img
+              width 1.5em
+              object-fit cover
+              vertical-align bottom
+      .center
+        height 100%
+        padding .1rem .3rem
+        flex 1
+        box-sizing border-box
+        p
+          background #eee
+          color #999
+          height 100%
+          border-radius .7rem
+          line-height .6rem
+          padding 0 .2rem
+          overflow hidden
+          text-overflow ellipsis
+          white-space nowrap
+      .right
+        width 2rem
+        // background #888
+        display flex
+        height 100%
+        position relative
+        >div
+          width 1rem
+        // .collection
+          // background #0ff
+        // .share
+          // background #f0f
 </style>

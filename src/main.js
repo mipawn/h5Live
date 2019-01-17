@@ -5,10 +5,10 @@ import App from './App'
 import router from './router'
 import './assets/css/reset.css'
 import JSBridge from './assets/js/SZJSBridge'
-import fastclick from 'fastclick'
+// import fastclick from 'fastclick'
 
 Vue.use(JSBridge)
-fastclick.attach(document.body)
+// fastclick.attach(document.body)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
