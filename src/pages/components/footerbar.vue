@@ -1,14 +1,14 @@
 <template>
   <div class="footer">
-    <div class="main-position" contenteditable="true">
+    <div class="main-position">
       <div class="main">
-        <div :class="'left' + (isWriting ? ' writing' : '')" @blur="contentBlur" >
-          <div class="content" ref="content" v-html="content"
+        <div :class="'left' + (isWriting ? ' writing' : '')" @blur="contentBlur">
+          <div class="content" ref="content" contenteditable="true"
             @focus="startWrite">
           </div>
           <div class="emoji" @click="showPackage">表情</div>
           <div class="send" @click="sendComment">发送</div>
-          <div class="emoji-package" v-if="show">
+          <div class="emoji-package" v-show="show">
             <img :src="'https://res.wx.qq.com/mpres/htmledition/images/icon/emotion/' + n + '.gif'"
               alt="" v-for="n in 20" :key="n" @click="addImage" />
           </div>
@@ -40,11 +40,6 @@ export default {
   },
   methods: {
     showPackage () {
-      if (!this.selection) {
-        this.$refs.content.focus()
-      } else {
-        this.range && this.selection.removeAllRanges() && this.selection.addRange(this.range)
-      }
       this.show = !this.show
     },
     contentBlur () {
@@ -69,12 +64,12 @@ export default {
       this.isWriting = true
       console.log(document.getSelection().getRangeAt(0))
       this.$refs.content.focus()
-      // let node = e ? e.target : {}
-      // this.selection = document.getSelection()
-      // this.range = this.selection.getRangeAt(0)
-      // if (node.tagName === 'IMG') {
-      //   this.setCursor(node, e.offsetX < node.width / 2)
-      // }
+      let node = e ? e.target : {}
+      this.selection = document.getSelection()
+      this.range = this.selection.getRangeAt(0)
+      if (node.tagName === 'IMG') {
+        this.setCursor(node, e.offsetX < node.width / 2)
+      }
     },
     addImage (e) {
       let node = e.target.cloneNode(true)
@@ -124,8 +119,8 @@ export default {
       .left
         flex 0
         display flex
-        background #ffffff
-        overflow hidden
+        background #fafafa
+        // overflow hidden
         position relative
         .emoji-package
           border-top 1px solid #ddd
@@ -140,24 +135,34 @@ export default {
           justify-items center
           align-items center
         .emoji
-          background #f00
+          // background #f00
           float right
+          width 1rem
+          text-align center
+        .send
+          // background #0ff
+          width 1rem
+          text-align center
         .content
           flex 1
           background #fff
           width 100%
           min-height 100%
+          overflow-x hidden
+          overflow-y scroll
           outline none
-          padding 0 .2rem
+          padding .1rem .2rem
+          // margin 0 .15rem
           box-sizing border-box
-          .text
-            padding-bottom .1rem
-            font-size .32rem
-            line-height 1.5
-            img
-              width 1.5em
-              object-fit cover
-              vertical-align bottom
+          line-height 1.3
+          // .text
+          //   padding-bottom .1rem
+          //   font-size .32rem
+          //   line-height 1.5
+          //   img
+          //     width 1.5em
+          //     object-fit cover
+          //     vertical-align bottom
       .center
         height 100%
         padding .1rem .3rem

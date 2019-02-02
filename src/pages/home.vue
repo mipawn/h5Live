@@ -4,6 +4,9 @@
       广告
     </div>
     <header id="live" >
+      <!-- <div id="player">
+        <iframe src="https://s.wcd.im/v/32ghjZ3a/?qr=" frameborder="0"></iframe>
+      </div> -->
       <player></player>
     </header>
     <section>
