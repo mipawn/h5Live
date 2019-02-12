@@ -12,7 +12,7 @@
     </header>
     <section>
       精彩纷呈，二十国领导观看表演
-      <img src="" alt="">
+      <!-- <img src="" alt=""> -->
     </section>
   </div>
 </template>

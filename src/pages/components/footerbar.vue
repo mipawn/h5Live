@@ -2,9 +2,9 @@
   <div class="footer">
     <div class="main-position">
       <div class="main">
-        <div :class="'left' + (isWriting ? ' writing' : '')" @blur="contentBlur">
-          <div class="content" ref="content" contenteditable="true"
-            @focus="startWrite">
+        <div :class="'left' + (isWriting ? ' writing' : '')">
+          <div class="content" ref="content" contenteditable="true" @blur="contentBlur"
+            @focus="contentFoucs" @click="contentFoucs"> 
           </div>
           <div class="emoji" @click="showPackage">表情</div>
           <div class="send" @click="sendComment">发送</div>
@@ -13,7 +13,7 @@
               alt="" v-for="n in 20" :key="n" @click="addImage" />
           </div>
         </div>
-        <div class="center" @click="contentFoucs" v-show="!isWriting">
+        <div class="center" @click="startWrite" v-show="!isWriting">
           <p>写评论</p>
         </div>
         <div class="right" v-show="!isWriting">
@@ -33,8 +33,8 @@ export default {
       content: '',
       preContent: '写评论',
       show: false,
-      range: '',
-      selection: '',
+      range: {},
+      selection: {},
       isWriting: false
     }
   },
@@ -43,52 +43,57 @@ export default {
       this.show = !this.show
     },
     contentBlur () {
-      console.log(999)
-      this.range = this.selection.getRangeAt(0)
-      this.isWriting = false
-      if (this.content) {
-        this.preContent = '草稿' + this.content
-      }
+      // console.log(999)
+      // this.range = this.selection.getRangeAt(0)
+      // this.isWriting = false
+      // if (this.content) {
+      //   this.preContent = '草稿' + this.content
+      // }
       // console.log(this.range)
     },
     startWrite () {
-      if (!this.selection) {
-        this.selection = document.getSelection()
-        this.range = this.selection.getRangeAt(0)
-      } else {
-        console.log(this.selection)
-        // this.range && this.selection.removeAllRanges() && this.selection.addRange(this.range)
-      }
+      this.isWriting = true
+      this.$refs.content.focus()
+      // if (!this.selection) {
+      //   this.selection = document.getSelection()
+      //   this.range = this.selection.getRangeAt(0)
+      // } else {
+      //   console.log(this.selection)
+      //   // this.range && this.selection.removeAllRanges() && this.selection.addRange(this.range)
+      // }
     },
     contentFoucs (e) {
-      this.isWriting = true
-      console.log(document.getSelection().getRangeAt(0))
-      this.$refs.content.focus()
+      // console.log(e.target)
+      // console.log(document.getSelection().getRangeAt(0))
       let node = e ? e.target : {}
-      this.selection = document.getSelection()
       this.range = this.selection.getRangeAt(0)
       if (node.tagName === 'IMG') {
         this.setCursor(node, e.offsetX < node.width / 2)
       }
     },
-    addImage (e) {
+    addImage (e) { 
       let node = e.target.cloneNode(true)
       this.range.insertNode(node)
       this.setCursor(node, false)
     },
     setCursor (node, before) {
+      console.log(node, this.$refs.content)
       let range = document.createRange()
       range.selectNodeContents(node)
-      range.setStart(before ? node : node.nextSibling, 0)
+      // range.setStart(before ? node : node.nextSibling, 0)
+      range.setStart(node, before ? 0 : 1)
       range.collapse(true)
       this.selection.removeAllRanges()
       this.selection.addRange(range)
       this.range = this.selection.getRangeAt(0)
       console.log(this.range)
     },
-    sendComment () {}
+    sendComment () {
+      this.$refs.content.innerHTML = ''
+    }
   },
   mounted () {
+    this.selection = document.getSelection()
     // this.range = document.createRange()
   }
 }
@@ -97,6 +102,7 @@ export default {
 <style lang="stylus" scoped>
 .footer
   position fixed
+  top 0
   // top calc(100% - 1rem)
   bottom 0
   left 0
@@ -104,7 +110,10 @@ export default {
   .main-position
     height .8rem
     line-height .8rem
-    position relative
+    position absolute
+    bottom 0
+    left 0
+    width 100%
     .main
       display flex
       border-top 1px solid #eee
