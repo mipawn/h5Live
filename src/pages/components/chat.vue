@@ -7,7 +7,7 @@
             <div class="left">名字</div>
             <div class="right">
               <span>15</span>
-              <i class="iconfont"></i>
+              <i class="iconfont icon-good"></i>
             </div>
           </div>
           <div class="create-time">2小时前</div>

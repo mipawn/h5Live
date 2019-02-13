@@ -1,24 +1,40 @@
 <template>
-  <div class="footer">
+  <div :class="'footer ' + (!isWriting ? 'footer-hide' : '')" @click.self="footerBlur">
     <div class="main-position">
       <div class="main">
         <div :class="'left' + (isWriting ? ' writing' : '')">
           <div class="content" ref="content" contenteditable="true" @blur="contentBlur"
             @focus="contentFoucs" @click="contentFoucs"> 
           </div>
-          <div class="emoji" @click="showPackage">表情</div>
+          <div class="emoji" @click="showPackage">
+            <i class="iconfont icon-laugh"></i>
+          </div>
           <div class="send" @click="sendComment">发送</div>
-          <div class="emoji-package" v-show="show">
+        </div>
+        <div class="emoji-package" v-show="show">
+          <div class="page1">
             <img :src="'https://res.wx.qq.com/mpres/htmledition/images/icon/emotion/' + n + '.gif'"
-              alt="" v-for="n in 20" :key="n" @click="addImage" />
+              alt="" v-for="n in 21" :key="n" @click="addImage" />
+          </div>
+          <div class="page2">
+            <img :src="'https://res.wx.qq.com/mpres/htmledition/images/icon/emotion/' + (n + 21) + '.gif'"
+              alt="" v-for="n in 21" :key="n" @click="addImage" />
           </div>
         </div>
         <div class="center" @click="startWrite" v-show="!isWriting">
-          <p>写评论</p>
+          <p v-if="content">
+            <span class="sketch">[草贴]</span>
+            <span v-html="content"></span>
+          </p>
+          <p v-else>写评论</p>
         </div>
         <div class="right" v-show="!isWriting">
-          <div class="collection">收藏</div>
-          <div class="share">分享</div>
+          <div class="collection" @click="doCollect">
+            <i class="iconfont icon-heart1"></i>
+          </div>
+          <div class="share" @click="doShare">
+            <i class="iconfont icon-share"></i>
+          </div>
         </div>
       </div>
     </div>
@@ -35,36 +51,27 @@ export default {
       show: false,
       range: {},
       selection: {},
-      isWriting: false
+      isWriting: false,
+      items: 40
     }
   },
   methods: {
     showPackage () {
       this.show = !this.show
+      this.setCursor()
     },
     contentBlur () {
-      // console.log(999)
-      // this.range = this.selection.getRangeAt(0)
-      // this.isWriting = false
-      // if (this.content) {
-      //   this.preContent = '草稿' + this.content
-      // }
-      // console.log(this.range)
+      this.range = this.selection.getRangeAt(0)
     },
     startWrite () {
       this.isWriting = true
-      this.$refs.content.focus()
-      // if (!this.selection) {
-      //   this.selection = document.getSelection()
-      //   this.range = this.selection.getRangeAt(0)
-      // } else {
-      //   console.log(this.selection)
-      //   // this.range && this.selection.removeAllRanges() && this.selection.addRange(this.range)
-      // }
+      if (this.content) {
+        this.setCursor()
+      } else {
+        this.$refs.content.focus()
+      }
     },
     contentFoucs (e) {
-      // console.log(e.target)
-      // console.log(document.getSelection().getRangeAt(0))
       let node = e ? e.target : {}
       this.range = this.selection.getRangeAt(0)
       if (node.tagName === 'IMG') {
@@ -77,29 +84,50 @@ export default {
       this.setCursor(node, false)
     },
     setCursor (node, before) {
-      console.log(node, this.$refs.content)
-      let range = document.createRange()
-      range.selectNodeContents(node)
-      // range.setStart(before ? node : node.nextSibling, 0)
-      range.setStart(node, before ? 0 : 1)
-      range.collapse(true)
-      this.selection.removeAllRanges()
-      this.selection.addRange(range)
-      this.range = this.selection.getRangeAt(0)
-      console.log(this.range)
+      if (node) {
+        let range = document.createRange()
+        range.selectNodeContents(node)
+        range.selectNode(node)
+        range.collapse(false)
+        this.selection.removeAllRanges()
+        this.selection.addRange(range)
+        this.range = this.selection.getRangeAt(0)
+      } else {
+        this.selection.removeAllRanges()
+        this.selection.addRange(this.range)
+      }
+    },
+    footerBlur () {
+      this.show = false
+      this.isWriting = false
+      this.content = this.$refs.content.innerHTML
     },
     sendComment () {
+      this.content = this.$refs.content.innerHTML
+      if (!this.content) { return }
+      this.$emit('comment', this.content)
+      this.show = false
+      this.isWriting = false
+      this.content = ''
       this.$refs.content.innerHTML = ''
+    },
+    doCollect () {
+    },
+    doShare () {
+      if (window.PalauAPI) {
+      }
     }
   },
   mounted () {
     this.selection = document.getSelection()
-    // this.range = document.createRange()
+    this.range = document.createRange()
   }
 }
 </script>
 
 <style lang="stylus" scoped>
+div.footer-hide
+  top auto
 .footer
   position fixed
   top 0
@@ -117,66 +145,77 @@ export default {
     .main
       display flex
       border-top 1px solid #eee
-      height 100%
+      // height 100%
       position absolute
       width 100%
       bottom 0
       background #fff
       align-items flex-end
-      div.writing
-        flex 1
-      .left
-        flex 0
-        display flex
-        background #fafafa
-        // overflow hidden
-        position relative
-        .emoji-package
-          border-top 1px solid #ddd
-          position absolute
-          right 0
-          bottom calc(100% + 2px)
-          background #ffffff
-          width 100vw
-          height 2.4rem
+      .emoji-package
+        border-top 1px solid #ddd
+        position absolute
+        right 0
+        // bottom calc(100% + 2px)
+        bottom 100%
+        background #ffffff
+        width 100vw
+        height 2.4rem
+        overflow-x scroll
+        >div
+          height 100%
           display grid
           grid-template-columns 1fr 1fr 1fr 1fr 1fr 1fr 1fr
           justify-items center
           align-items center
+      div.writing
+        width 100%
+        max-height none
+      .left
+        display flex
+        width 0
+        max-height .8rem
+        background #fafafa
+        overflow hidden
+        position relative
+        align-items flex-end
         .emoji
-          // background #f00
           float right
           width 1rem
           text-align center
+          line-height 30px
+          .iconfont
+            font-size .5rem
         .send
-          // background #0ff
           width 1rem
           text-align center
+          padding-right .2rem
+          font-size .32rem
+          color #666
         .content
           flex 1
+          align-self stretch
           background #fff
           width 100%
           min-height 100%
+          max-height 5em
           overflow-x hidden
           overflow-y scroll
           outline none
           padding .1rem .2rem
-          // margin 0 .15rem
           box-sizing border-box
-          line-height 1.3
-          // .text
-          //   padding-bottom .1rem
-          //   font-size .32rem
-          //   line-height 1.5
-          //   img
-          //     width 1.5em
-          //     object-fit cover
-          //     vertical-align bottom
+          line-height 1.4
+          border 1px solid #ddd
+          border-radius 3px
+          >img
+            width 1.4em
       .center
         height 100%
-        padding .1rem .3rem
+        padding .1rem .2rem .1rem .3rem
         flex 1
+        overflow hidden
         box-sizing border-box
+        .sketch
+          color #f33
         p
           background #eee
           color #999
@@ -188,15 +227,13 @@ export default {
           text-overflow ellipsis
           white-space nowrap
       .right
-        width 2rem
-        // background #888
+        width 1.8rem
         display flex
         height 100%
         position relative
+        text-align center
         >div
-          width 1rem
-        // .collection
-          // background #0ff
-        // .share
-          // background #f0f
+          width .8rem
+          .iconfont
+            font-size .4rem
 </style>

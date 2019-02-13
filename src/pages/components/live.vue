@@ -4,15 +4,14 @@
       <div class="title">
         <div class="left">智慧萧山小编</div>
         <div class="right">
-          <span>15</span>
-          <i class="iconfont"></i>
+          <span>15006</span> 
+          <i class="iconfont icon-good"></i>
         </div>
       </div>
       <div class="create-time">2小时前</div>
     </header>
     <section>
       精彩纷呈，二十国领导观看表演
-      <!-- <img src="" alt=""> -->
     </section>
   </div>
 </template>

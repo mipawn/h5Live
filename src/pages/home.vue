@@ -4,9 +4,6 @@
       广告
     </div>
     <header id="live" >
-      <!-- <div id="player">
-        <iframe src="https://s.wcd.im/v/32ghjZ3a/?qr=" frameborder="0"></iframe>
-      </div> -->
       <player></player>
     </header>
     <section>
@@ -19,13 +16,14 @@
       </div>
       <router-view class="bg"></router-view>
     </section>
-    <footerbar></footerbar>
+    <footerbar @comment="sendComment"></footerbar>
   </div>
 </template>
 
 <script>
 import player from './components/player'
 import footerbar from './components/footerbar'
+import axios from 'axios'
 export default {
   name: 'home',
   components: {
@@ -60,6 +58,14 @@ export default {
       this.idx = i
       this.$router.push({
         path
+      })
+    },
+    sendComment (content) {
+      let url =  ''
+      let data = new FormData()
+      data.append('', content)
+      axios.post(url, data, res => {
+        console.log(res)
       })
     }
   },
