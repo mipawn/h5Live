@@ -105,6 +105,7 @@ export default {
     overflow hidden
     display flex
     flex-direction column
+    padding-bottom .8rem
     .nav
       ul
         display flex

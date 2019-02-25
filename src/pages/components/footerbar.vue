@@ -78,7 +78,7 @@ export default {
         this.setCursor(node, e.offsetX < node.width / 2)
       }
     },
-    addImage (e) { 
+    addImage (e) {
       let node = e.target.cloneNode(true)
       this.range.insertNode(node)
       this.setCursor(node, false)
