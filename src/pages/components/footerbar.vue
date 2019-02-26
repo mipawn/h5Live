@@ -4,7 +4,7 @@
       <div class="main">
         <div :class="'left' + (isWriting ? ' writing' : '')">
           <div class="content" ref="content" contenteditable="true" @blur="contentBlur"
-            @focus="contentFoucs" @click="contentFoucs"> 
+            @click="contentFoucs">
           </div>
           <div class="emoji" @click="showPackage">
             <i class="iconfont icon-laugh"></i>
@@ -29,9 +29,6 @@
           <p v-else>写评论</p>
         </div>
         <div class="right" v-show="!isWriting">
-          <div class="collection" @click="doCollect">
-            <i class="iconfont icon-heart1"></i>
-          </div>
           <div class="share" @click="doShare">
             <i class="iconfont icon-share"></i>
           </div>
@@ -65,10 +62,15 @@ export default {
     },
     startWrite () {
       this.isWriting = true
+      // document.body.style.position = 'fixed'
+      setTimeout(() => {
+        document.documentElement.scrollTop = window.innerHeight
+      }, 1000)
       if (this.content) {
         this.setCursor()
       } else {
         this.$refs.content.focus()
+        this.contentFoucs()
       }
     },
     contentFoucs (e) {
