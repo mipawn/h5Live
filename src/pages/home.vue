@@ -1,12 +1,13 @@
 <template>
   <div class="home">
-    <div class="ad">
+    <img v-if="details.window_status == 1 && downCount > 0" :src="details.window_src" alt="" class="hello">
+    <!-- <div class="ad" v-if="downCount == 0">
       广告
-    </div>
-    <header id="live" >
+    </div> -->
+    <header id="live" v-if="downCount == 0">
       <player></player>
     </header>
-    <section>
+    <section v-if="downCount == 0">
       <div class="nav">
         <ul>
           <li :class="{active:idx===index}" v-for="(item, index) of list" :key="index" @click="goto(item.path, index)">
@@ -14,9 +15,10 @@
           </li>
         </ul>
       </div>
-      <router-view class="bg"></router-view>
+      <router-view class="bg" @goLive="goLive"></router-view>
     </section>
-    <footerbar @comment="sendComment"></footerbar>
+    <footerbar :details="details" v-if="downCount == 0"></footerbar>
+    <div class="playCountDown" v-if="playCountDown && playId == id && type == 2">{{playCountDown}}playId{{playId}}id{{id}}</div>
   </div>
 </template>
 
@@ -33,7 +35,7 @@ export default {
   data () {
     return {
       idx: 0,
-      list: [
+      list: [ // 选项卡
         {
           name: '图文直播',
           path: 'live'
@@ -50,29 +52,83 @@ export default {
           name: '往期活动',
           path: 'ago'
         }
-      ]
+      ],
+      id: '',
+      type: '',
+      details: {
+        title: ''
+      },
+      userInfo: '', // 用户信息
+      downCount: 2, // 开机动画时间 s
+      playCountDown : '', // 倒计时
+      playId: sessionStorage.playId // 播放视频id
     }
   },
   methods: {
-    goto (path, i) {
+    goto (path, i) { // 选项卡的跳转
       this.idx = i
-      this.$router.push({
-        path
+      this.$router.replace({
+        path,
+        query: this.$route.query
       })
     },
-    sendComment (content) {
-      let url =  ''
-      let data = new FormData()
-      data.append('', content)
-      axios.post(url, data, res => {
-        console.log(res)
+    goLive (query) {
+      this.idx = 0
+      this.$router.push({path:'live', query: query})
+    },
+    getUserInfo() { // 获取用户信息
+      if (window.SZJSBridge) {
+        this.userInfo = window.PalauAPI.user.userInfo()
+      }
+    },
+    getDetails () { // 获取详情
+      this.$axios({
+        url: this.baseUrl+'v1/live/details',
+        params: {
+          id: this.id
+        },
+        method: 'get'
+      }).then(res => {
+        if (res.data.code === 200) {
+          this.details = res.data.data
+          if(res.data.data.window_status == 1) {
+            this.downCount = 3
+            this.countDown() // 开启倒计时
+          } else {
+            this.downCount = 0
+          }
+        }
+      }).catch(err => {
+        console.log(err)
       })
+    },
+    countDown () { // 开机动画倒计时
+      let timer = setInterval(() => {
+        if(this.downCount > 0) {
+          this.downCount  = this.downCount - 1
+        } else {
+          clearInterval(timer)
+        }
+      },1000)
     }
   },
   mounted () {
-    this.$router.push({
-      path: 'live'
-    })
+    let {id, type} = this.$route.query
+    this.id = id
+    this.type = type
+    this.getUserInfo()
+    this.getDetails()
+    let timer = setInterval(() => {
+      if (sessionStorage.playCountDown !== 0) {
+        this.playCountDown = sessionStorage.playCountDown
+      } else {
+        clearInterval(timer)
+        this.playCountDown = false
+      }
+      },1000)
+  },
+  updated () {
+    this.playId = sessionStorage.playId
   }
 }
 </script>
@@ -125,4 +181,20 @@ export default {
     .bg
       flex 1
       overflow auto
+.hello 
+  position fixed
+  z-index 1000
+  width 100%
+  height 100%
+  object-fit cover
+.playCountDown
+  position fixed
+  z-index 200
+  background red
+  top 0.2rem
+  right 0.4rem
+  color #fff
+  display flex
+  padding 0.1rem
+  border-radius 0.1rem
 </style>

@@ -1,41 +1,23 @@
 <template>
-  <div :class="'footer ' + (!isWriting ? 'footer-hide' : '')" @click.self="footerBlur">
+  <div class="footer">
     <div class="main-position">
       <div class="main">
-        <div :class="'left' + (isWriting ? ' writing' : '')">
-          <!-- 编辑器元素 -->
-          <div class="content" ref="content"
-            contenteditable="true"
-            @blur="contentBlur"
-            @click="contentFoucs">
-          </div>
-          <div class="emoji" @click="showPackage">
-            <i class="iconfont icon-laugh"></i>
-          </div>
-          <div class="send" @click="sendComment">发送</div>
+        <div class="center">
+          <input type="text" class="" placeholder="发表评论" v-model="content">
         </div>
-        <!-- 表情包 -->
-        <div class="emoji-package" v-show="show" @click="addImage">
-          <div class="page1">
-            <img :src="'https://res.wx.qq.com/mpres/htmledition/images/icon/emotion/' + n + '.gif'"
-              alt="" v-for="n in 21" :key="n" />
-          </div>
-          <div class="page2">
-            <img :src="'https://res.wx.qq.com/mpres/htmledition/images/icon/emotion/' + (n + 21) + '.gif'"
-              alt="" v-for="n in 21" :key="n" />
+        <div class="emoji-package" v-show="showEmoji">
+          <div class="qq_face">
+            <a v-for="(item, index) in emojiList" :key="index" :class="item.className" @click="addImage(index, item.title)" ></a>
           </div>
         </div>
-        <div class="center" @click="startWrite" v-show="!isWriting">
-          <p v-if="content">
-            <span class="sketch">[草贴]</span>
-            <span v-html="content"></span>
-          </p>
-          <p v-else>写评论</p>
-        </div>
-        <div class="right" v-show="!isWriting">
+        <div class="right">
           <div class="share" @click="doShare">
             <i class="iconfont icon-share"></i>
           </div>
+          <div class="emoji" @click="showPackage">
+            <i class="iconfont icon-laugh" style="font-size: 0.45rem"></i>
+          </div>
+          <div class="send" @click="sendComment">发送</div>
         </div>
       </div>
     </div>
@@ -43,110 +25,113 @@
 </template>
 
 <script>
+import emojiTitle from '../../assets/js/emoji.js'
 export default {
   name: 'footerbar',
   data () {
     return {
-      content: '',
-      preContent: '写评论',
-      show: false,
-      range: {},
-      selection: {},
-      isWriting: false,
-      items: 40
+      content: '', // 评论内容
+      showEmoji: false, // 是否显示选择表情
+      emojiList:[], // emoji表情库
+      userInfo: '', // 用户信息
+      id: ''
+    }
+  },
+  props: {
+    details: {
+      type: Object,
+      required: true
     }
   },
   methods: {
-    contentBlur () {
-      /**
-       * 每次焦点移出都要保存一次当前 range ，后面好放回来
-       * 由于输入框以外的点击都会使输入框失去焦点，不知道会有什么操作，故勤保存
-       */
-      this.range = this.selection.getRangeAt(0)
-    },
-    startWrite () {
-      this.isWriting = true
-      if (this.content) {
-        // 如果focus前有内容， 光标设置到之前保存的位置 setCursor
-        this.setCursor()
+    sendComment () { //发送评论
+      if (window.SZJSBridge) {
+        if(window.PalauAPI.user.userInfo().uid) {
+          this.$axios({
+          url: this.baseUrl + 'v1/live/comment_add',
+          data: this.$qs.stringify({
+            live_id: this.id,
+            uid: this.userInfo.uid,
+            pid: 0,
+            content: this.content,
+            nickname: this.userInfo.nickName,
+            tel: this.userInfo.phoneNumber
+          }),
+          method: 'post'
+        }).then(res => {
+          if (res.data.code == 200) {
+            this.$message({
+              message: '评论成功',
+              type: 'success',
+              center: true
+            })
+            this.content = ''
+          } else {
+            this.$message({
+              message: '评论失败',
+              type: 'error',
+              center: true
+            })
+          }
+        })
+        } else {
+          window.PalauAPI.user.login()
+        }
       } else {
-        // 开始评论，输入框自动聚焦
-        this.$refs.content.focus()
-        this.contentFoucs()
+        this.$message({
+          message: '请前往app登录评论',
+          type: 'warning',
+          center: true
+        })
       }
     },
-    contentFoucs (e) {
-      /**
-       * range更新到点击的位置
-       * 点到图片就根据点击位置和图片大小设置一个合理的位置(前或后)
-       */
-      let node = e ? e.target : {}
-      this.range = this.selection.getRangeAt(0)
-      if (node.tagName === 'IMG') {
-        this.setCursor(node, e.offsetX < node.width / 2)
-      }
-    },
-    showPackage () {
-      this.show = !this.show
-      this.setCursor()
-    },
-    addImage (e) {
-      /** 
-       * 点击emoji图片后，复制节点添到当前range里并设置光标和更新range 
-       * 若是点到其他地方则设置到之前的位置
-       */
-      if (e.target.tagName === 'IMG') {
-        let node = e.target.cloneNode(true)
-        this.range.insertNode(node)
-        this.setCursor(node, false)
+    doShare () { // 分享
+      if (window.SZJSBridge) {
+        window.PalauAPI.share('all',this.details.title.toString(),this.details.introduce,window.location.href,this.details.img_src, res => {
+          if (res == 0) {
+            this.$message({
+              message: '分享失败',
+              type: 'warning',
+              center: true
+            })
+          } else if (res == 1) {
+            this.message({
+              message: '分享成功',
+              type: 'success',
+              center: true
+            })
+          }
+        })
       } else {
-        this.setCursor()
+        this.$message({
+          message: '请前往app分享',
+          type: 'warning',
+          center: true
+        })
       }
     },
-    setCursor (node, before) {
-      /**
-       * node 为传入的节点，不传则foucs到之前保存的位置
-       * before 控制折叠方向
-       */
-      if (node) {
-        // 需要新建一个range来添加内容
-        let range = document.createRange()
-        range.selectNode(node)
-        range.collapse(!!before)
-        this.selection.removeAllRanges()
-        this.selection.addRange(range)
-        // 更新 range
-        this.range = range
-      } else {
-        this.selection.removeAllRanges()
-        // 使用之前的
-        this.selection.addRange(this.range)
+    showPackage () { // 显示emoji表情开关
+      this.showEmoji = !this.showEmoji
+    },
+    addImage (index, title) { // 添加图片 
+      this.content = this.content + this.emojiList[index].title
+    },
+    setEmojiList () { // 设置表情库
+      for (let i = 0; i < 105; i++) {
+        let className = 'qqface' + i
+        this.emojiList.push({'className': className, 'title': emojiTitle[i].zh_CN})
       }
     },
-    footerBlur () {
-      // 退出输入状态，保存内容
-      this.show = false
-      this.isWriting = false
-      this.content = this.$refs.content.innerHTML
+    getUserInfo() { // 获取用户信息
+      if (window.SZJSBridge) {
+        this.uid = window.PalauAPI.user.userInfo().uid || -1000
+      }
     },
-    sendComment () {
-      this.content = this.$refs.content.innerHTML
-      if (!this.content) { return }
-      this.$emit('comment', this.content)
-      this.show = false
-      this.isWriting = false
-      this.content = ''
-      this.$refs.content.innerHTML = ''
-    },
-    doCollect () {
-    },
-    doShare () {
-    }
   },
   mounted () {
-    // 先得到selection，并创建一个range
-    this.selection = document.getSelection()
-    this.range = document.createRange()
+    this.id = this.$route.query.id
+    this.setEmojiList()
+    this.getUserInfo()
   }
 }
 </script>
@@ -156,8 +141,6 @@ div.footer-hide
   top auto
 .footer
   position fixed
-  top 0
-  // top calc(100% - 1rem)
   bottom 0
   left 0
   width 100%
@@ -171,7 +154,6 @@ div.footer-hide
     .main
       display flex
       border-top 1px solid #eee
-      // height 100%
       position absolute
       width 100%
       bottom 0
@@ -180,22 +162,10 @@ div.footer-hide
       .emoji-package
         border-top 1px solid #ddd
         position absolute
-        right 0
         bottom 100%
         background #ffffff
-        width 100vw
         height 2.4rem
-        overflow-x scroll
-        user-select none
-        >div
-          height 100%
-          display grid
-          grid-template-columns 1fr 1fr 1fr 1fr 1fr 1fr 1fr
-          justify-items center
-          align-items center
-      div.writing
-        width 100%
-        max-height none
+        overflow-y auto
       .left
         display flex
         width 0
@@ -210,31 +180,13 @@ div.footer-hide
           text-align center
           line-height 30px
           .iconfont
-            font-size .5rem
+            font-size .7rem
         .send
           width 1rem
           text-align center
           padding-right .2rem
           font-size .32rem
           color #666
-        .content
-          flex 1
-          align-self stretch
-          background #fff
-          width 100%
-          min-height 100%
-          max-height 5em
-          overflow-x hidden
-          overflow-y scroll
-          outline none
-          padding .1rem .2rem
-          box-sizing border-box
-          line-height 1.4
-          border 1px solid #ddd
-          border-radius 3px
-          word-break break-all
-          >img
-            width 1.4em
       .center
         height 100%
         padding .1rem .2rem .1rem .3rem
@@ -243,24 +195,459 @@ div.footer-hide
         box-sizing border-box
         .sketch
           color #f33
-        p
+        input
           background #eee
           color #999
-          height 100%
+          width 100%
           border-radius .7rem
           line-height .6rem
           padding 0 .2rem
           overflow hidden
           text-overflow ellipsis
-          white-space nowrap
+          box-sizing border-box
       .right
-        width 1.8rem
         display flex
-        height 100%
         position relative
-        text-align center
-        >div
-          width .8rem
-          .iconfont
-            font-size .4rem
+        align-items center
+        padding: 0.1rem 0.2rem 0.1rem 0;
+        div
+          padding-left 0.1rem
+          padding-right 0.1rem
+          font-size .34rem
+</style>
+<style scoped>
+.qq_face {
+    display: flex;
+    flex-wrap: wrap;
+}
+.qq_face a {
+    background:url("../../assets/imgs/WechatIMG2112.jpeg") no-repeat;
+    background-size: 434px 202px;
+}
+.qq_face a {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    font-size: 0;
+    border-bottom: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+    cursor: pointer;
+}
+.qq_face .qqface0 {
+    background-position: 0 0
+}
+.qq_face .qqface1 {
+    background-position: -29px 0
+}
+.qq_face .qqface2 {
+    background-position: -58px 0
+}
+
+.qq_face .qqface3 {
+    background-position: -87px 0
+}
+
+.qq_face .qqface4 {
+    background-position: -116px 0
+}
+
+.qq_face .qqface5 {
+    background-position: -145px 0
+}
+
+.qq_face .qqface6 {
+    background-position: -174px 0
+}
+
+.qq_face .qqface7 {
+    background-position: -203px 0
+}
+
+.qq_face .qqface8 {
+    background-position: -232px 0
+}
+
+.qq_face .qqface9 {
+    background-position: -261px 0
+}
+
+.qq_face .qqface10 {
+    background-position: -290px 0
+}
+
+.qq_face .qqface11 {
+    background-position: -319px 0
+}
+
+.qq_face .qqface12 {
+    background-position: -348px 0
+}
+
+.qq_face .qqface13 {
+    background-position: -377px 0
+}
+
+.qq_face .qqface14 {
+    background-position: -406px 0
+}
+
+.qq_face .qqface15 {
+    background-position: 0 -29px
+}
+
+.qq_face .qqface16 {
+    background-position: -29px -29px
+}
+
+.qq_face .qqface17 {
+    background-position: -58px -29px
+}
+
+.qq_face .qqface18 {
+    background-position: -87px -29px
+}
+
+.qq_face .qqface19 {
+    background-position: -116px -29px
+}
+
+.qq_face .qqface20 {
+    background-position: -145px -29px
+}
+
+.qq_face .qqface21 {
+    background-position: -174px -29px
+}
+
+.qq_face .qqface22 {
+    background-position: -203px -29px
+}
+
+.qq_face .qqface23 {
+    background-position: -232px -29px
+}
+
+.qq_face .qqface24 {
+    background-position: -261px -29px
+}
+
+.qq_face .qqface25 {
+    background-position: -290px -29px
+}
+
+.qq_face .qqface26 {
+    background-position: -319px -29px
+}
+
+.qq_face .qqface27 {
+    background-position: -348px -29px
+}
+
+.qq_face .qqface28 {
+    background-position: -377px -29px
+}
+
+.qq_face .qqface29 {
+    background-position: -406px -29px
+}
+
+.qq_face .qqface30 {
+    background-position: 0 -58px
+}
+
+.qq_face .qqface31 {
+    background-position: -29px -58px
+}
+
+.qq_face .qqface32 {
+    background-position: -58px -58px
+}
+
+.qq_face .qqface33 {
+    background-position: -87px -58px
+}
+
+.qq_face .qqface34 {
+    background-position: -116px -58px
+}
+
+.qq_face .qqface35 {
+    background-position: -145px -58px
+}
+
+.qq_face .qqface36 {
+    background-position: -174px -58px
+}
+
+.qq_face .qqface37 {
+    background-position: -203px -58px
+}
+
+.qq_face .qqface38 {
+    background-position: -232px -58px
+}
+
+.qq_face .qqface39 {
+    background-position: -261px -58px
+}
+
+.qq_face .qqface40 {
+    background-position: -290px -58px
+}
+
+.qq_face .qqface41 {
+    background-position: -319px -58px
+}
+
+.qq_face .qqface42 {
+    background-position: -348px -58px
+}
+
+.qq_face .qqface43 {
+    background-position: -377px -58px
+}
+
+.qq_face .qqface44 {
+    background-position: -406px -58px
+}
+
+.qq_face .qqface45 {
+    background-position: 0 -87px
+}
+
+.qq_face .qqface46 {
+    background-position: -29px -87px
+}
+
+.qq_face .qqface47 {
+    background-position: -58px -87px
+}
+
+.qq_face .qqface48 {
+    background-position: -87px -87px
+}
+
+.qq_face .qqface49 {
+    background-position: -116px -87px
+}
+
+.qq_face .qqface50 {
+    background-position: -145px -87px
+}
+
+.qq_face .qqface51 {
+    background-position: -174px -87px
+}
+
+.qq_face .qqface52 {
+    background-position: -203px -87px
+}
+
+.qq_face .qqface53 {
+    background-position: -232px -87px
+}
+
+.qq_face .qqface54 {
+    background-position: -261px -87px
+}
+
+.qq_face .qqface55 {
+    background-position: -290px -87px
+}
+
+.qq_face .qqface56 {
+    background-position: -319px -87px
+}
+
+.qq_face .qqface57 {
+    background-position: -348px -87px
+}
+
+.qq_face .qqface58 {
+    background-position: -377px -87px
+}
+
+.qq_face .qqface59 {
+    background-position: -406px -87px
+}
+
+.qq_face .qqface60 {
+    background-position: 0 -116px
+}
+
+.qq_face .qqface61 {
+    background-position: -29px -116px
+}
+
+.qq_face .qqface62 {
+    background-position: -58px -116px
+}
+
+.qq_face .qqface63 {
+    background-position: -87px -116px
+}
+
+.qq_face .qqface64 {
+    background-position: -116px -116px
+}
+
+.qq_face .qqface65 {
+    background-position: -145px -116px
+}
+
+.qq_face .qqface66 {
+    background-position: -174px -116px
+}
+
+.qq_face .qqface67 {
+    background-position: -203px -116px
+}
+
+.qq_face .qqface68 {
+    background-position: -232px -116px
+}
+
+.qq_face .qqface69 {
+    background-position: -261px -116px
+}
+
+.qq_face .qqface70 {
+    background-position: -290px -116px
+}
+
+.qq_face .qqface71 {
+    background-position: -319px -116px
+}
+
+.qq_face .qqface72 {
+    background-position: -348px -116px
+}
+
+.qq_face .qqface73 {
+    background-position: -377px -116px
+}
+
+.qq_face .qqface74 {
+    background-position: -406px -116px
+}
+
+.qq_face .qqface75 {
+    background-position: 0 -145px
+}
+
+.qq_face .qqface76 {
+    background-position: -29px -145px
+}
+
+.qq_face .qqface77 {
+    background-position: -58px -145px
+}
+
+.qq_face .qqface78 {
+    background-position: -87px -145px
+}
+
+.qq_face .qqface79 {
+    background-position: -116px -145px
+}
+
+.qq_face .qqface80 {
+    background-position: -145px -145px
+}
+
+.qq_face .qqface81 {
+    background-position: -174px -145px
+}
+
+.qq_face .qqface82 {
+    background-position: -203px -145px
+}
+
+.qq_face .qqface83 {
+    background-position: -232px -145px
+}
+
+.qq_face .qqface84 {
+    background-position: -261px -145px
+}
+
+.qq_face .qqface85 {
+    background-position: -290px -145px
+}
+
+.qq_face .qqface86 {
+    background-position: -319px -145px
+}
+
+.qq_face .qqface87 {
+    background-position: -348px -145px
+}
+
+.qq_face .qqface88 {
+    background-position: -377px -145px
+}
+
+.qq_face .qqface89 {
+    background-position: -406px -145px
+}
+
+.qq_face .qqface90 {
+    background-position: 0 -174px
+}
+
+.qq_face .qqface91 {
+    background-position: -29px -174px
+}
+
+.qq_face .qqface92 {
+    background-position: -58px -174px
+}
+
+.qq_face .qqface93 {
+    background-position: -87px -174px
+}
+
+.qq_face .qqface94 {
+    background-position: -116px -174px
+}
+
+.qq_face .qqface95 {
+    background-position: -145px -174px
+}
+
+.qq_face .qqface96 {
+    background-position: -174px -174px
+}
+
+.qq_face .qqface97 {
+    background-position: -203px -174px
+}
+
+.qq_face .qqface98 {
+    background-position: -232px -174px
+}
+
+.qq_face .qqface99 {
+    background-position: -261px -174px
+}
+
+.qq_face .qqface100 {
+    background-position: -290px -174px
+}
+
+.qq_face .qqface101 {
+    background-position: -319px -174px
+}
+
+.qq_face .qqface102 {
+    background-position: -348px -174px
+}
+
+.qq_face .qqface103 {
+    background-position: -377px -174px
+}
+
+.qq_face .qqface104 {
+    background-position: -406px -174px
+}
 </style>
