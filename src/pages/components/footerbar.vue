@@ -34,7 +34,7 @@ export default {
       showEmoji: false, // 是否显示选择表情
       emojiList:[], // emoji表情库
       userInfo: '', // 用户信息
-      id: ''
+      id: '' // 
     }
   },
   props: {
