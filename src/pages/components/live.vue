@@ -278,7 +278,7 @@ export default {
   left: 0;
   right: 0;
   z-index: 200;
-  background: #000;
+  background: rgba(0, 0, 0, 0.3);
 }
 #fullScreen-photo >img {
   width: auto;

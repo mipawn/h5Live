@@ -1,13 +1,13 @@
 <template>
   <div class="home">
-    <img v-if="details.window_status == 1 && downCount > 0" :src="details.window_src" alt="" class="hello">
+    <img v-if="details.window_status == 1 && downCount > 0" :src="details.window_src" alt="" class="hello" @click="closePackage">
     <!-- <div class="ad" v-if="downCount == 0">
       广告
     </div> -->
-    <header id="live" v-if="downCount == 0">
+    <header id="live" v-if="downCount == 0" @click="closePackage">
       <player></player>
     </header>
-    <section v-if="downCount == 0">
+    <section v-if="downCount == 0" @click="closePackage">
       <div class="nav">
         <ul>
           <li :class="{active:idx===index}" v-for="(item, index) of list" :key="index" @click="goto(item.path, index)">
@@ -15,10 +15,10 @@
           </li>
         </ul>
       </div>
-      <router-view class="bg" @goLive="goLive"></router-view>
+      <router-view class="bg" @goLive="goLive" ></router-view>
     </section>
-    <footerbar :details="details" v-if="downCount == 0"></footerbar>
-    <div class="playCountDown" v-if="playCountDown && playId == id && type == 2">{{playCountDown}}playId{{playId}}id{{id}}</div>
+    <footerbar :details="details" v-if="downCount == 0" ref="footerbar"></footerbar>
+    <div class="playCountDown" v-if="playCountDown && playId == id && type == 2" @click="closePackage">{{playCountDown}}playId{{playId}}id{{id}}</div>
   </div>
 </template>
 
@@ -65,6 +65,9 @@ export default {
     }
   },
   methods: {
+    closePackage () { // 控制表情开关
+      this.$refs.footerbar.closePackage()
+    },
     goto (path, i) { // 选项卡的跳转
       this.idx = i
       this.$router.replace({

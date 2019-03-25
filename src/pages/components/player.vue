@@ -22,7 +22,146 @@ export default {
       source: 'http://l.cztvcloud.com/channels/lantian/SXxiaoshan1/720p.m3u8', // 直播资源
       playTime: false, // 是否到播放时间
       isLive: true, // 是否为直播
-      playCountDown: '' // 播放倒计时
+      playCountDown: '', // 播放倒计时
+      danmukuList :[{
+        "mode": 1,
+        "text": "哈哈",
+        "stime": 1000,
+        "size": 25,
+        "color": 0xffffff
+        }, {
+          "mode": 1,
+          "text": "前方高能",
+          "stime": 2000,
+          "size": 25,
+          "color": 0xff0000
+        }, {
+          "mode": 1,
+          "text": "灵魂歌手",
+          "stime": 30000,
+          "size": 25,
+          "color": 0xff0000
+        }, {
+          "mode": 1,
+          "text": "这是弹幕2",
+          "stime": 4000,
+          "size": 25,
+          "color": 0x00c1de
+        }, {
+          "mode": 1,
+          "text": "神测试",
+          "stime": 5000,
+          "size": 25,
+          "color": 0x00c1de
+        }, {
+          "mode": 1,
+          "text": "顺手一划",
+          "stime": 10000,
+          "size": 25,
+          "color": 0x00c1de
+        }, {
+          "mode": 1,
+          "text": "哈哈",
+          "stime": 1000,
+          "size": 25,
+          "color": 0xffffff
+        }, {
+          "mode": 1,
+          "text": "哈哈",
+          "stime": 1000,
+          "size": 25,
+          "color": 0xffffff
+        }, {
+          "mode": 1,
+          "text": "哈哈",
+          "stime": 1000,
+          "size": 25,
+          "color": 0xffffff
+        }, {
+          "mode": 1,
+          "text": "哈哈",
+          "stime": 1000,
+          "size": 25,
+          "color": 0xffffff
+        }, {
+          "mode": 1,
+          "text": "哈哈",
+          "stime": 1000,
+          "size": 25,
+          "color": 0xffffff
+        }, {
+          "mode": 1,
+          "text": "哈哈",
+          "stime": 1000,
+          "size": 25,
+          "color": 0xffffff
+        }, {
+          "mode": 1,
+          "text": "哈哈",
+          "stime": 1000,
+          "size": 25,
+          "color": 0xffffff
+        }, {
+          "mode": 1,
+          "text": "哈哈",
+          "stime": 1000,
+          "size": 25,
+          "color": 0xffffff
+        }, {
+          "mode": 1,
+          "text": "哈哈",
+          "stime": 1000,
+          "size": 25,
+          "color": 0xffffff
+        }, {
+          "mode": 1,
+          "text": "哈哈",
+          "stime": 1000,
+          "size": 25,
+          "color": 0xffffff
+        }, {
+          "mode": 1,
+          "text": "哈哈",
+          "stime": 1000,
+          "size": 25,
+          "color": 0xffffff
+        }, {
+          "mode": 1,
+          "text": "哈哈",
+          "stime": 1000,
+          "size": 25,
+          "color": 0xffffff
+        }, {
+          "mode": 1,
+          "text": "哈哈",
+          "stime": 1000,
+          "size": 25,
+          "color": 0xffffff
+        }, {
+          "mode": 1,
+          "text": "哈哈",
+          "stime": 1000,
+          "size": 25,
+          "color": 0xffffff
+        }, {
+          "mode": 1,
+          "text": "哈哈",
+          "stime": 1000,
+          "size": 25,
+          "color": 0xffffff
+        }, {
+          "mode": 1,
+          "text": "哈哈",
+          "stime": 1000,
+          "size": 25,
+          "color": 0xffffff
+        }, {
+          "mode": 1,
+          "text": "哈哈",
+          "stime": 1000,
+          "size": 25,
+          "color": 0xffffff
+      }]
     }
   },
   methods: {
@@ -33,7 +172,7 @@ export default {
         width: '100%',
         height: '100%',
         autoplay: true,
-        isLive: this.isLive,
+        isLive: this.isLive, 
         rePlay: false,
         playsinline: true,
         preload: true,
@@ -45,7 +184,23 @@ export default {
                         {"name":"volume","align":"tr","x":10,"y":10},//声音
                         {"name":"fullScreenButton","align":"tr","x":10,"y":10},
                         ]}
-            ]
+        ],
+        components: [
+        //   {
+        //   name: 'StartADComponent',
+        //   type: AliPlayerComponent.StartADComponent,
+        //   args: ['https://img.alicdn.com/tfs/TB1byi8afDH8KJjy1XcXXcpdXXa-1920-514.jpg', 'https://promotion.aliyun.com/ntms/act/videoai.html', 3]
+        // }, 
+        // {
+        //   name: 'PauseADComponent',
+        //   type: AliPlayerComponent.PauseADComponent,
+        //   args: ['https://img.alicdn.com/tfs/TB1byi8afDH8KJjy1XcXXcpdXXa-1920-514.jpg', 'https://promotion.aliyun.com/ntms/act/videoai.html']
+        // },
+        {
+          name: 'AliplayerDanmuComponent',
+          type: AliPlayerComponent.AliplayerDanmuComponent,
+          args: [this.danmukuList]
+        }]
       })
       // player.on('cancelFullScreen', ()=> {
         

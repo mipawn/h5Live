@@ -41,7 +41,7 @@ export default {
     details: {
       type: Object,
       required: true
-    }
+    },
   },
   methods: {
     sendComment () { //发送评论
@@ -113,6 +113,9 @@ export default {
     showPackage () { // 显示emoji表情开关
       this.showEmoji = !this.showEmoji
     },
+    closePackage () {
+      this.showEmoji = false
+    },
     addImage (index, title) { // 添加图片 
       this.content = this.content + this.emojiList[index].title
     },
@@ -124,6 +127,7 @@ export default {
     },
     getUserInfo() { // 获取用户信息
       if (window.SZJSBridge) {
+          this.userInfo = window.PalauAPI.user.userInfo()
         this.uid = window.PalauAPI.user.userInfo().uid || -1000
       }
     },
