@@ -3,13 +3,15 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import './assets/css/reset.css'
+// import './assets/css/reset.css'
+import './assets/css/index.css'
 import './assets/css/iconfont.css'
 import JSBridge from './assets/js/SZJSBridge'
 import axios from 'axios'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import qs from 'qs'
+import echarts from 'echarts'
 // import fastclick from 'fastclick'
 
 Vue.use(JSBridge)
@@ -18,6 +20,7 @@ const baseUrl = 'http://168.100.188.38/'
 Vue.prototype.baseUrl = baseUrl
 Vue.prototype.$axios = axios
 Vue.prototype.$qs = qs
+Vue.prototype.$echarts = echarts
 // fastclick.attach(document.body)
 Vue.config.productionTip = false
 
