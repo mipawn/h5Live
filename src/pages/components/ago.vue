@@ -40,6 +40,7 @@ export default {
     toDetail (id,type) { // 查看详情
       this.$router.push({path: '/home/live', query:{id:id,type:type}})
       this.$emit('goLive',this.$route.query)
+      window.location.reload()
     },
   },
   mounted () {
@@ -65,8 +66,9 @@ export default {
     margin: 0;
   }
   .item-photo {
-    max-width: 4rem;
+    max-width: 3.2rem;
     height: 1.7rem;
+    min-width: 3rem;
   }
   .item-photo>img {
     width: 100%;

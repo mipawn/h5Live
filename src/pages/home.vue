@@ -18,7 +18,7 @@
       <router-view class="bg" @goLive="goLive" ></router-view>
     </section>
     <footerbar :details="details" v-if="downCount == 0" ref="footerbar"></footerbar>
-    <div class="playCountDown" v-if="playCountDown && playId == id && type == 2" @click="closePackage">{{playCountDown}}playId{{playId}}id{{id}}</div>
+    <div class="playCountDown" v-if="playCountDown && playId == id && type == 2" @click="closePackage">{{playCountDown}}</div>
   </div>
 </template>
 

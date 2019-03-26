@@ -23,145 +23,145 @@ export default {
       playTime: false, // 是否到播放时间
       isLive: true, // 是否为直播
       playCountDown: '', // 播放倒计时
-      danmukuList :[{
-        "mode": 1,
-        "text": "哈哈",
-        "stime": 1000,
-        "size": 25,
-        "color": 0xffffff
-        }, {
-          "mode": 1,
-          "text": "前方高能",
-          "stime": 2000,
-          "size": 25,
-          "color": 0xff0000
-        }, {
-          "mode": 1,
-          "text": "灵魂歌手",
-          "stime": 30000,
-          "size": 25,
-          "color": 0xff0000
-        }, {
-          "mode": 1,
-          "text": "这是弹幕2",
-          "stime": 4000,
-          "size": 25,
-          "color": 0x00c1de
-        }, {
-          "mode": 1,
-          "text": "神测试",
-          "stime": 5000,
-          "size": 25,
-          "color": 0x00c1de
-        }, {
-          "mode": 1,
-          "text": "顺手一划",
-          "stime": 10000,
-          "size": 25,
-          "color": 0x00c1de
-        }, {
-          "mode": 1,
-          "text": "哈哈",
-          "stime": 1000,
-          "size": 25,
-          "color": 0xffffff
-        }, {
-          "mode": 1,
-          "text": "哈哈",
-          "stime": 1000,
-          "size": 25,
-          "color": 0xffffff
-        }, {
-          "mode": 1,
-          "text": "哈哈",
-          "stime": 1000,
-          "size": 25,
-          "color": 0xffffff
-        }, {
-          "mode": 1,
-          "text": "哈哈",
-          "stime": 1000,
-          "size": 25,
-          "color": 0xffffff
-        }, {
-          "mode": 1,
-          "text": "哈哈",
-          "stime": 1000,
-          "size": 25,
-          "color": 0xffffff
-        }, {
-          "mode": 1,
-          "text": "哈哈",
-          "stime": 1000,
-          "size": 25,
-          "color": 0xffffff
-        }, {
-          "mode": 1,
-          "text": "哈哈",
-          "stime": 1000,
-          "size": 25,
-          "color": 0xffffff
-        }, {
-          "mode": 1,
-          "text": "哈哈",
-          "stime": 1000,
-          "size": 25,
-          "color": 0xffffff
-        }, {
-          "mode": 1,
-          "text": "哈哈",
-          "stime": 1000,
-          "size": 25,
-          "color": 0xffffff
-        }, {
-          "mode": 1,
-          "text": "哈哈",
-          "stime": 1000,
-          "size": 25,
-          "color": 0xffffff
-        }, {
-          "mode": 1,
-          "text": "哈哈",
-          "stime": 1000,
-          "size": 25,
-          "color": 0xffffff
-        }, {
-          "mode": 1,
-          "text": "哈哈",
-          "stime": 1000,
-          "size": 25,
-          "color": 0xffffff
-        }, {
-          "mode": 1,
-          "text": "哈哈",
-          "stime": 1000,
-          "size": 25,
-          "color": 0xffffff
-        }, {
-          "mode": 1,
-          "text": "哈哈",
-          "stime": 1000,
-          "size": 25,
-          "color": 0xffffff
-        }, {
-          "mode": 1,
-          "text": "哈哈",
-          "stime": 1000,
-          "size": 25,
-          "color": 0xffffff
-        }, {
-          "mode": 1,
-          "text": "哈哈",
-          "stime": 1000,
-          "size": 25,
-          "color": 0xffffff
-        }, {
-          "mode": 1,
-          "text": "哈哈",
-          "stime": 1000,
-          "size": 25,
-          "color": 0xffffff
-      }]
+      // danmukuList :[{
+      //   "mode": 1,
+      //   "text": "哈哈",
+      //   "stime": 1000,
+      //   "size": 25,
+      //   "color": 0xffffff
+      //   }, {
+      //     "mode": 1,
+      //     "text": "前方高能",
+      //     "stime": 2000,
+      //     "size": 25,
+      //     "color": 0xff0000
+      //   }, {
+      //     "mode": 1,
+      //     "text": "灵魂歌手",
+      //     "stime": 30000,
+      //     "size": 25,
+      //     "color": 0xff0000
+      //   }, {
+      //     "mode": 1,
+      //     "text": "这是弹幕2",
+      //     "stime": 4000,
+      //     "size": 25,
+      //     "color": 0x00c1de
+      //   }, {
+      //     "mode": 1,
+      //     "text": "神测试",
+      //     "stime": 5000,
+      //     "size": 25,
+      //     "color": 0x00c1de
+      //   }, {
+      //     "mode": 1,
+      //     "text": "顺手一划",
+      //     "stime": 10000,
+      //     "size": 25,
+      //     "color": 0x00c1de
+      //   }, {
+      //     "mode": 1,
+      //     "text": "哈哈",
+      //     "stime": 1000,
+      //     "size": 25,
+      //     "color": 0xffffff
+      //   }, {
+      //     "mode": 1,
+      //     "text": "哈哈",
+      //     "stime": 1000,
+      //     "size": 25,
+      //     "color": 0xffffff
+      //   }, {
+      //     "mode": 1,
+      //     "text": "哈哈",
+      //     "stime": 1000,
+      //     "size": 25,
+      //     "color": 0xffffff
+      //   }, {
+      //     "mode": 1,
+      //     "text": "哈哈",
+      //     "stime": 1000,
+      //     "size": 25,
+      //     "color": 0xffffff
+      //   }, {
+      //     "mode": 1,
+      //     "text": "哈哈",
+      //     "stime": 1000,
+      //     "size": 25,
+      //     "color": 0xffffff
+      //   }, {
+      //     "mode": 1,
+      //     "text": "哈哈",
+      //     "stime": 1000,
+      //     "size": 25,
+      //     "color": 0xffffff
+      //   }, {
+      //     "mode": 1,
+      //     "text": "哈哈",
+      //     "stime": 1000,
+      //     "size": 25,
+      //     "color": 0xffffff
+      //   }, {
+      //     "mode": 1,
+      //     "text": "哈哈",
+      //     "stime": 1000,
+      //     "size": 25,
+      //     "color": 0xffffff
+      //   }, {
+      //     "mode": 1,
+      //     "text": "哈哈",
+      //     "stime": 1000,
+      //     "size": 25,
+      //     "color": 0xffffff
+      //   }, {
+      //     "mode": 1,
+      //     "text": "哈哈",
+      //     "stime": 1000,
+      //     "size": 25,
+      //     "color": 0xffffff
+      //   }, {
+      //     "mode": 1,
+      //     "text": "哈哈",
+      //     "stime": 1000,
+      //     "size": 25,
+      //     "color": 0xffffff
+      //   }, {
+      //     "mode": 1,
+      //     "text": "哈哈",
+      //     "stime": 1000,
+      //     "size": 25,
+      //     "color": 0xffffff
+      //   }, {
+      //     "mode": 1,
+      //     "text": "哈哈",
+      //     "stime": 1000,
+      //     "size": 25,
+      //     "color": 0xffffff
+      //   }, {
+      //     "mode": 1,
+      //     "text": "哈哈",
+      //     "stime": 1000,
+      //     "size": 25,
+      //     "color": 0xffffff
+      //   }, {
+      //     "mode": 1,
+      //     "text": "哈哈",
+      //     "stime": 1000,
+      //     "size": 25,
+      //     "color": 0xffffff
+      //   }, {
+      //     "mode": 1,
+      //     "text": "哈哈",
+      //     "stime": 1000,
+      //     "size": 25,
+      //     "color": 0xffffff
+      //   }, {
+      //     "mode": 1,
+      //     "text": "哈哈",
+      //     "stime": 1000,
+      //     "size": 25,
+      //     "color": 0xffffff
+      // }]
     }
   },
   methods: {
@@ -185,7 +185,7 @@ export default {
                         {"name":"fullScreenButton","align":"tr","x":10,"y":10},
                         ]}
         ],
-        components: [
+        // components: [
         //   {
         //   name: 'StartADComponent',
         //   type: AliPlayerComponent.StartADComponent,
@@ -196,11 +196,11 @@ export default {
         //   type: AliPlayerComponent.PauseADComponent,
         //   args: ['https://img.alicdn.com/tfs/TB1byi8afDH8KJjy1XcXXcpdXXa-1920-514.jpg', 'https://promotion.aliyun.com/ntms/act/videoai.html']
         // },
-        {
-          name: 'AliplayerDanmuComponent',
-          type: AliPlayerComponent.AliplayerDanmuComponent,
-          args: [this.danmukuList]
-        }]
+        // {
+        //   name: 'AliplayerDanmuComponent',
+        //   type: AliPlayerComponent.AliplayerDanmuComponent,
+        //   args: [this.danmukuList]
+        // }]
       })
       // player.on('cancelFullScreen', ()=> {
         
@@ -234,7 +234,7 @@ export default {
                   sessionStorage.playCountDown = this.playCountDown
                 } else {
                   clearInterval(timer)
-                  // this.source = res.data.data.live_src
+                  this.source = res.data.data.live_src
                   this.playCountDown = 0
                   this.playTime = true
                   sessionStorage.playCountDown = ''
@@ -244,15 +244,16 @@ export default {
                 }
               },1000)
             } else {
+              sessionStorage.playCountDown = ''
               this.playTime = true
-              // this.source = res.data.data.live_src
+              this.source = res.data.data.live_src
               this.$nextTick(() => {
                 this.init() // 加载播放器
               })
             }
           } else if(this.type == 3) { // 重播
             this.isLive = false
-            // this.source = res.data.data.live_src
+            this.source = res.data.data.live_src
             this.$nextTick(() => {
               this.init() // 加载播放器
             })
@@ -268,12 +269,13 @@ export default {
     this.id = this.$route.query.id
     this.isLive = this.type == 2 ? true : false
     this.getDetails()
+    sessionStorage.playId = this.id
   },
   beforeRouteLeave (to, from, next) {
     sessionStorage.playTime = ''
     sessionStorage.playId = this.id
     next()
-  }
+  },
 }
 </script>
 
