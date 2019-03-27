@@ -3,37 +3,34 @@
   <div class="g_container">
     <div class="m_topbg" style="margin-top:0px">
       <div class="m_header" id="realTimeDiv">
-        <h2 class="m_tit">实况监测：萧山气象台2019年03月25日14时50分发布</h2>
-        <div class="m_box fl w70">
+        <div class="m_box fl w60">
           <div class="tempBox">
-            <em class="tempture">15.6</em>
+            <em class="tempture">{{weatherHeader.DryBulTemp}}</em>
             <b class="unit"></b>
           </div>
           <ul class="ele_list clearfix">
-            <li><i class="i_tag0"></i>0.0毫米</li>
-            <li><i class="i_tag1"></i>61% </li>
-            <li><i class="i_tag3"></i>1006.0百帕</li>
+            <li><i class="i_tag0"></i>{{weatherHeader.Precipitation}}</li>
+            <li><i class="i_tag1"></i>{{weatherHeader.RelHumidity}}</li>
+            <li><i class="i_tag3"></i>{{weatherHeader.StationPress}}</li>
           </ul>
         </div>
-        <div class="m_box fr w30">
+        <div class="m_box fl w40">
           <div class="windBox">
             <div class="wb_con">
-              <img class="wind_top" src="../assets/images/wind_top.png">
-              <img class="wind_img" src="../assets/images/wind.png">
+              你若安好便是晴天
             </div>
-            <span class="wind_txt">西南偏西风1级</span>
           </div>
         </div>
         <div class="clearfix"></div>
-        <a class="link24R" href="http://xswx.grassinfo.cn/xswx/index.php?s=/addon/Weather/Weather/currentInfo.html ">近24小时天气实况</a>
+        <span class="link24R">{{weatherHeader.WindDirect}}风{{weatherHeader.WindVelocity}}</span>
       </div>
     </div>
     <!-- 顶部结束 -->
     <!-- 短期预报开始 -->
-    <div class="m_block mb_short" id="shortTimeDiv">
+    <!-- <div class="m_block mb_short" id="shortTimeDiv">
       <div class="m_tit">短期预报</div>
       <p class="m_detail">今天下午到夜里多云；明天白天晴到多云，夜里多云转阴；后天阴有雨。偏南风3～4级。明天早晨最低气温8～9度，明天白天最高气温22～23度。明天平均相对湿度75%。</p>
-    </div>
+    </div> -->
     <!-- 短期预报结束 -->
     <div class="m_block mb_7day ">
       <div class="m_tit">七天预报</div>
@@ -41,75 +38,40 @@
         <table class="m_table day7_tab" id="forecast7dayTab" style="transition-property: -webkit-transform; transform-origin: 0px 0px; transform: translate3d(0px, 0px, 0px);">
             <tbody>
               <tr>
-                <td>今天<br>03/25</td>
-                <td>明天<br>03/26</td>
-                <td>后天<br>03/27</td>
-                <td>周四<br>03/28</td>
-                <td>周五<br>03/29</td>
-                <td>周六<br>03/30</td>
-                <td>周日<br>03/31</td>
+                <td v-for="(item, key) in forecastSevenList" :key="key">{{item.week}}<br>{{key}}</td>
               </tr>
               <tr>
-                <td>小雨</td>
-                <td>多云</td>
-                <td>小到中雨</td>
-                <td>中到大雨</td>
-                <td>阴</td>
-                <td>多云</td>
-                <td>晴</td>
+                <td v-for="(item, key) in forecastSevenList" :key="key">{{item.am.weather}}</td>
               </tr>
               <tr>
-                <td>
-                  <i class="day_tag">白天</i>
+                <!-- <td>
+                  <i class="day_tag">早</i>
                   <img src="../assets/images/day/7.png">
-                </td>
-                <td><img src="../assets/images/day/1.png"></td>
-                <td><img src="../assets/images/day/21.png"></td>
-                <td><img src="../assets/images/day/22.png"></td>
-                <td><img src="../assets/images/day/2.png"></td>
-                <td><img src="../assets/images/day/1.png"></td>
-                <td><img src="../assets/images/day/0.png"></td>
+                </td> -->
+                <td v-for="(item, key) in forecastSevenList" :key="key"><img :src="item.am.icon"></td>
               </tr>
-              <tr style="height:120px;">
+              <tr style="height:6.5rem;">
                 <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
               </tr>
               <div style="width:442px;position: absolute;
-                top: 110px;
+                top: 6.5rem;
                 width: 100%;
                 height: 140px;
-                z-index: 0;" >
-                <div ref="mychart" style="position: relative;
-                overflow: hidden;
-                width: 442px;
-                height: 140px;
-                line-height: normal;
-                z-index: 0;
-                -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div>
+                z-index: 0;" 
+                ref="mychart">
               </div>
               <tr>
-                 <td>
-                   <i class="night_tag">晚上</i>
-                   <img src="../assets/images/night/0.png">
-                 </td>
-                   <td><img src="../assets/images/night/7.png"></td>
-                   <td><img src="../assets/images/night/8.png"></td>
-                   <td><img src="../assets/images/night/7.png"></td>
-                   <td><img src="../assets/images/night/1.png"></td>
-                   <td><img src="../assets/images/night/7.png"></td>
-                   <td><img src="../assets/images/night/0.png"></td>
+                <td v-for="(item, key) in forecastSevenList" :key="key" v-if="item.pm"><img :src="item.pm.icon"></td>
               </tr>
               <tr>
-                <td>晴</td><td>小雨</td><td>中雨</td><td>小雨</td><td>多云</td><td>小雨</td><td>晴</td>
-              </tr>
-              <tr>
-                <td>-<br>&lt;3级</td><td>-<br>&lt;3级</td><td>东北风<br>3-4级</td><td>-<br>&lt;3级</td><td>-<br>&lt;3级</td><td>-<br>&lt;3级</td><td>-<br>&lt;3级</td>
+                <td v-for="(item, key) in forecastSevenList" :key="key" v-if="item.pm">{{item.pm.weather}}</td>
               </tr>
             </tbody>
         </table>
       </div>
     </div>
     <div class="m_block mb_index">
-      <div class="m_tit">指数预报</div>
+      <div class="m_tit">生活指数</div>
       <table class="index_tab" id="lifeIndexDiv">
         <tbody>
           <tr>
@@ -119,35 +81,37 @@
           </tr>
         <!-- 指数详情end -->
         </tbody>
-          <tr>
-            <td data-id="AQI:40-50，首要污染物:无，空气质量等级:优。空气基本无污染。" data-val="AQI指数">
-              <img class="index_img" src="../assets/images/indexicon_0.png" alt="AQI">
-              <span class="index_txt">AQI指数<br>优级</span>
+          <tr v-if="liveInfo.length > 0">
+            <td>
+              <img class="index_img" src="../assets/images/indexicon_0.png" :alt="liveInfo[0].name">
+              <span class="index_txt">{{liveInfo[0].name}}<br>{{liveInfo[0].level}}级</span>
             </td>
-            <td data-id="森林火险等级为二级，森林火险气象等级较低" data-val="森林火险">
-              <img class="index_img" src="../assets/images/indexicon_1.png" alt="AQI">
-              <span class="index_txt">森林火险<br>2级</span>
+            <td>
+              <img class="index_img" src="../assets/images/indexicon_1.png" :alt="liveInfo[1].name">
+              <span class="index_txt">{{liveInfo[1].name}}<br>{{liveInfo[1].level}}级</span>
             </td>
-            <td data-id="人体舒适度为舒适度指数4级，人体感觉较冷" data-val="人体舒适度">
-              <img class="index_img" src="../assets/images/indexicon_2.png" alt="AQI">
-              <span class="index_txt">人体舒适度<br>4级</span></td>
+            <td>
+              <img class="index_img" src="../assets/images/indexicon_2.png" :alt="liveInfo[2].name">
+              <span class="index_txt">{{liveInfo[2].name}}<br>{{liveInfo[2].level}}级</span>
+            </td>
           </tr>
-          <tr>
-            <td data-id="行车安全指数为三级，气象条件比较差，请司机朋友们谨慎驾驶" data-val="行车安全">
-              <img class="index_img" src="../assets/images/indexicon_3.png" alt="AQI">
-              <span class="index_txt">行车安全<br>3级</span>
+          <tr v-if="liveInfo.length > 0">
+            <td>
+              <img class="index_img" src="../assets/images/indexicon_3.png" :alt="liveInfo[3].name">
+              <span class="index_txt">{{liveInfo[3].name}}<br>{{liveInfo[3].level}}级</span>
             </td>
-            <td data-id="空气污染气象条件为二级,较有利于空气污染物稀释、扩散和清除" data-val="空气污染气象条件">
-              <img class="index_img" src="../assets/images/indexicon_4.png" alt="AQI">
-              <span class="index_txt">空气污染气象条件<br>2级</span>
+            <td>
+              <img class="index_img" src="../assets/images/indexicon_4.png" :alt="liveInfo[4].name">
+              <span class="index_txt">{{liveInfo[4].name}}<br>{{liveInfo[4].level}}级</span>
             </td>
-            <td data-id="洗车指数为四级，不太适宜洗车" data-val="洗车指数">
-              <img class="index_img" src="../assets/images/indexicon_5.png" alt="AQI">
-              <span class="index_txt">洗车指数<br>4级</span>
+            <td>
+              <img class="index_img" src="../assets/images/indexicon_5.png" :alt="liveInfo[5].name">
+              <span class="index_txt">{{liveInfo[5].name}}<br>{{liveInfo[5].level}}级</span>
             </td>
           </tr>
       </table>
     </div>
+    <div style="text-align:center;padding:10px 0;">萧山天气数据由萧山气象台提供</div>
   </div>
 </template>
 
@@ -155,7 +119,12 @@
 export default {
   data () {
     return {
-
+      weatherHeader: '', // 顶部天气实况
+      forecastSevenList: '', // 七天天气列表
+      maxTemp: [], // 最高温
+      minTemp: [], // 最低温
+      liveInfo: [], // 生活指数
+      position: ''
     }
   },
   methods: {
@@ -166,8 +135,10 @@ export default {
         xAxis: [
           {
             data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-            show: true,
+            show: false,
             type: 'category',
+            boundaryGap: false,
+            scale: true
           },
           {
             data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
@@ -175,13 +146,23 @@ export default {
             position:"bottom",
             offset:60,
             type: 'category',
+            boundaryGap: false,
+            scale: true
           }
         ],
         yAxis: {
           splitLine: {
             show: false
           },
-          show: false
+          show: false,
+          scale: true,
+          boundaryGap: false,
+        },
+        grid: {
+          top: 25,
+          bottom: 25,
+          left: 30,
+          right: 30
         },
         tooltip: {
           trigger: 'none'
@@ -191,27 +172,158 @@ export default {
         },
         series:[
           {
-            name: '白天',
+            name: '最高温',
             type: 'line',
             smooth: true,
-            data: [10, 12, 21, 54, 260, 830, 710],
-            xAxisIndex: 0
+            data: this.maxTemp,
+            xAxisIndex: 0,
+            barGap: 0,
+            label: {
+              show: true,
+              color: '#fff'
+            },
+            lineStyle: {
+              color: '#f8d404'
+            }
           },
           {
-            name: '晚上',
+            name: '最低温',
             type: 'line',
             smooth: true,
-            data: [20, 22, 31, 24, 26, 83, 71],
-            xAxisIndex: 1
+            data: this.minTemp,
+            xAxisIndex: 1,
+            label: {
+              show: true,
+              color: '#fff',
+              position: 'bottom'
+            },
+            lineStyle: {
+              color: '#618ab0'
+            }
           }
         ]
       })
+    },
+    getHeader () { // 获取顶部天气实况
+      this.$http({
+        url: '/xstq/liveWeatherInfo.jspx',
+        params: {},
+        method: 'get'
+      }).then(res => {
+        if (res.result === 1 ) {
+          let weatherHeader = res.info
+          weatherHeader.DryBulTemp = weatherHeader.DryBulTemp.slice(0,-1)
+          weatherHeader.Precipitation = weatherHeader.Precipitation.replace('mm', '毫米')
+          weatherHeader.StationPress = weatherHeader.StationPress.replace('hpa', '百帕')
+          this.weatherHeader = weatherHeader
+        } else {
+          this.weatherHeader = []
+        }
+      }).catch(err => {
+        console.log('err', err)
+        this.$message({
+          message: '获取天气实况失败',
+          type: 'warning',
+          center: true
+        })
+      })
+    },
+    getForecastSeven () { // 获取7天数据
+      this.$http({
+        url: '/xstq/forecast7Day.jspx',
+        method: 'get',
+        params: {}
+      }).then(res => {
+        if (res.result == 1) {
+        let forecastSevenList = res.data
+        this.setLength(forecastSevenList)
+        this.setWeek(forecastSevenList)
+        this.getTempArea(forecastSevenList)
+        this.forecastSevenList = forecastSevenList
+        }
+      }).catch(err => {
+        console.log('err', err)
+        this.$message({
+          message: '获取7天数据失败' + err,
+          type: 'warning',
+          center: true
+        })
+      })
+    },
+    //时间格式
+    setWeek(time){ // 设置星期 time为 object
+      let key = Object.keys(time)
+      time[key[0]].week = '今天'
+      time[key[1]].week = '明天'
+      time[key[2]].week = '后天'
+      let date = new Date()
+      let weekday = date.getDay() //今天是星期几
+      time[key[3]].week = weekday + 3 > 6? weekday + 3 - 6:weekday + 3
+      time[key[4]].week = weekday + 4 > 6? weekday + 4 - 6:weekday + 4
+      time[key[5]].week = weekday + 5 > 6? weekday + 5 - 6:weekday + 5
+      time[key[6]].week = weekday + 6 > 6? weekday + 6 - 6:weekday + 6
+      for (let key in time) {
+        if (time[key].week === 0) {
+          time[key].week = '周日'
+        } else if(time[key].week === 1) {
+          time[key].week = '周一'
+        } else if(time[key].week === 2) {
+          time[key].week = '周二'
+        } else if(time[key].week === 3) {
+          time[key].week = '周三'
+        } else if (time[key].week === 4) {
+          time[key].week = '周四'
+        } else if(time[key].week === 5) {
+          time[key].week = '周五'
+        } else if(time[key].week === 6) {
+          time[key].week = '周六'
+        }
+      }
+      return time
+    },
+    setLength (object) { // 递归处理7天数据的长度
+      let key = Object.keys(object) // 获取key[]
+      if (key.length === 7) {
+        return object
+      } else {
+        delete object[key[key.length-1]] // 删除最后一个
+        this.setLength(object)
+      }
+    },
+    getTempArea (temp) { // 获取温度范围
+      let maxTemp=[],minTemp=[]
+        for (let key in temp) {
+          maxTemp.push(temp[key].maxTemp)
+          minTemp.push(temp[key].minTemp)
+          
+          this.maxTemp = maxTemp
+          this.minTemp = minTemp
+        }
+      this.drawLine()
+    },
+    getLiveForecast () { // 获取生活指数
+      this.$http({
+        url: 'xstq/liveForecast.jspx',
+        method: 'get'
+      }).then(res => {
+        this.liveInfo = res.info
+      }).catch(err => {
+        this.$message({
+          message: '获取生活预报失败',
+          type: 'warning',
+          center: true
+        })
+      })
+    },
+    getPosition () { // 获取地理位置
+      console.log(window)
     }
   },
   mounted () {
-    this.$nextTick(() => {
-      this.drawLine()
-    })
+    this.getHeader()
+    this.getForecastSeven()
+    this.getLiveForecast()
+    this.getPosition()
   }
 }
 </script>

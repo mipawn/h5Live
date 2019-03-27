@@ -40,7 +40,7 @@
      padding: 0;
  }
  body {
-     background: #f1f5f8;
+     background: #01346b;
  }
  a {
      color: #000;
@@ -73,10 +73,10 @@
  /*页面样式定义*/
  
  .g_container {
-     background: url(../images/background.png) no-repeat center #2c4f87;
+     background: url(../images/background.jpg) no-repeat center;
      background-position: 0 0;
      background-size: 100% auto;
-     padding-bottom: 50px;
+     padding-bottom: 30px;
  }
  /*预警*/
  .warnBox {
@@ -104,9 +104,10 @@
      font-weight: lighter;
      font-size: 1em;
      padding: 1em 0px;
+     text-align: center;
  }
- .w70 {
-     width: 70%;
+ .w60 {
+     width: 60%;
  }
  .m_header .tempBox {
      position: relative;
@@ -169,13 +170,13 @@
      background-position: 0 -3.3em;
  }
  .m_box .windBox {
-     position: absolute;
-     right: 1em;
+     text-align: center;
  }
  .windBox .wb_con {
      display: block;
-     width: 3.5em;
-     margin: -15px auto 10px auto;
+     width: 4em;
+     margin-top: 25px;
+     margin-left: 35px;
      position: relative;
  }
  .wb_con img {
@@ -259,7 +260,10 @@
  
  .m_block,.m_topbg{
      margin-top: 40px;
-     background: rgba(0, 0, 0, 0.1);
+     /* background: url(../images/background.jpg) no-repeat center; */
+ }
+ .mb_index {
+     background: url(../images/background.jpg) no-repeat top;
  }
  .m_block .m_tit {
      height: 40px;
@@ -393,7 +397,7 @@
      position:absolute;
      width:100%;
      min-height:100%;
-     background: url(../images/background.png) no-repeat center #2c4f87;
+     background: url(../images/background.jpg) no-repeat center;
      background-position: 0 0;
      background-size: 100% auto;
  }
@@ -475,7 +479,7 @@
      top: -30px;
      color: #fff;
      padding-right:20px;
-     background:url(../images/icon-right.png) no-repeat right center;
+     /* background:url(../images/icon-right.png) no-repeat right center; */
      background-size: 13px 13px;
  }
  /*指数浮层*/
