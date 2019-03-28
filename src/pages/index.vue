@@ -16,7 +16,7 @@
         </div>
         <div class="m_box fl w40">
           <div class="windBox">
-            <div class="wb_con">
+            <div class="wb_con" id="container">
               你若安好便是晴天
             </div>
           </div>
@@ -116,6 +116,7 @@
 </template>
 
 <script>
+import MapLoader from '@/assets/js/amap.js'
 export default {
   data () {
     return {
@@ -316,7 +317,25 @@ export default {
       })
     },
     getPosition () { // 获取地理位置
-      console.log(window)
+      
+      MapLoader().then(AMap => {
+        console.log('地图加载成功')
+        AMap.plugin('AMap.Geocoder', function() {
+          var geocoder = new AMap.Geocoder({
+            // city 指定进行编码查询的城市，支持传入城市名、adcode 和 citycode
+            city: '010'
+          })
+          var lnglat = [116.396574, 39.992706]
+          geocoder.getAddress(lnglat, function(status, result) {
+            if (status === 'complete' && result.info === 'OK') {
+                // result为对应的地理位置详细信息
+                console.log(result)
+            }
+          })
+        })
+      }, e => {
+      console.log('地图加载失败' ,e)
+      })
     }
   },
   mounted () {
