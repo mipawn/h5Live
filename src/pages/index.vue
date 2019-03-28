@@ -17,7 +17,7 @@
         <div class="m_box fl w40">
           <div class="windBox">
             <div class="wb_con" id="container">
-              你若安好便是晴天
+              {{position}}
             </div>
           </div>
         </div>
@@ -116,7 +116,7 @@
 </template>
 
 <script>
-import MapLoader from '@/assets/js/amap.js'
+import { lazyAMapApiLoaderInstance } from 'vue-amap'
 export default {
   data () {
     return {
@@ -125,7 +125,7 @@ export default {
       maxTemp: [], // 最高温
       minTemp: [], // 最低温
       liveInfo: [], // 生活指数
-      position: ''
+      position: '',
     }
   },
   methods: {
@@ -317,24 +317,21 @@ export default {
       })
     },
     getPosition () { // 获取地理位置
-      
-      MapLoader().then(AMap => {
-        console.log('地图加载成功')
-        AMap.plugin('AMap.Geocoder', function() {
-          var geocoder = new AMap.Geocoder({
-            // city 指定进行编码查询的城市，支持传入城市名、adcode 和 citycode
-            city: '010'
-          })
-          var lnglat = [116.396574, 39.992706]
-          geocoder.getAddress(lnglat, function(status, result) {
-            if (status === 'complete' && result.info === 'OK') {
-                // result为对应的地理位置详细信息
-                console.log(result)
-            }
-          })
+      this.position = '定位中...'
+      lazyAMapApiLoaderInstance.load().then(() => {
+        // your code ...
+        let geolocation = new AMap.Geolocation({
+          enableHighAccuracy: true,
         })
-      }, e => {
-      console.log('地图加载失败' ,e)
+        let geocoder = new AMap.Geocoder({
+          radius: 1000,
+          extensions: "all"
+        })
+        geolocation.getCurrentPosition((status,res) => {
+          if (status === 'complete' && res.info === 'SUCCESS') {
+            this.position = res.addressComponent.township
+          }
+        })
       })
     }
   },

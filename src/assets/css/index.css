@@ -176,8 +176,9 @@
      display: block;
      width: 4em;
      margin-top: 25px;
-     margin-left: 35px;
+     /* margin-left: 35px; */
      position: relative;
+    font-size: 2rem;
  }
  .wb_con img {
      width: 100%;
