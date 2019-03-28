@@ -50,13 +50,13 @@
                 </td> -->
                 <td v-for="(item, key) in forecastSevenList" :key="key"><img :src="item.am.icon"></td>
               </tr>
-              <tr style="height:6.5rem;">
+              <tr style="height:140px;">
                 <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
               </tr>
               <div style="width:442px;position: absolute;
-                top: 6.5rem;
+                top: 37%;
                 width: 100%;
-                height: 140px;
+                height: 150px;
                 z-index: 0;" 
                 ref="mychart">
               </div>
@@ -111,7 +111,7 @@
           </tr>
       </table>
     </div>
-    <div style="text-align:center;padding:10px 0;">萧山天气数据由萧山气象台提供</div>
+    <div style="text-align:center;padding:30px 0 0;">萧山天气数据由萧山气象台提供</div>
   </div>
 </template>
 
@@ -160,8 +160,8 @@ export default {
           boundaryGap: false,
         },
         grid: {
-          top: 25,
-          bottom: 25,
+          top: 35,
+          bottom: 35,
           left: 30,
           right: 30
         },
@@ -199,7 +199,7 @@ export default {
               position: 'bottom'
             },
             lineStyle: {
-              color: '#618ab0'
+              color: '#afe4f8'
             }
           }
         ]
@@ -231,7 +231,7 @@ export default {
     },
     getForecastSeven () { // 获取7天数据
       this.$http({
-        url: '/xstq/forecast7Day.jspx',
+        url: 'http://item.xianghunet.com/index/weathering/forecast3Day',
         method: 'get',
         params: {}
       }).then(res => {
@@ -318,18 +318,36 @@ export default {
     },
     getPosition () { // 获取地理位置
       this.position = '定位中...'
-      lazyAMapApiLoaderInstance.load().then(() => {
-        // your code ...
-        let geolocation = new AMap.Geolocation({
-          enableHighAccuracy: true,
+      let len = []
+      if (window.SZJSBridge) {
+        PalauAPI.location.requestLocation(res => {
+          len.push(res.longitude)
+          len.push(res.latitude)
         })
+      }
+      lazyAMapApiLoaderInstance.load().then(() => { // 使用高德原生API
+        // your code ...
+        // let geolocation = new AMap.Geolocation({
+        //   enableHighAccuracy: true,
+        // })
         let geocoder = new AMap.Geocoder({
           radius: 1000,
           extensions: "all"
         })
-        geolocation.getCurrentPosition((status,res) => {
-          if (status === 'complete' && res.info === 'SUCCESS') {
-            this.position = res.addressComponent.township
+        /**每次需要授权 */
+        // geolocation.getCurrentPosition((status,res) => {
+        //   if (status === 'complete' && res.info === 'SUCCESS') {
+        //     this.position = res.addressComponent.township
+        //   }
+        // })
+        var _this = this
+        geocoder.getAddress(lon, function(status, result) {
+          if (status === 'complete' && result.info === 'OK') {
+            if (result && result.regeocode) {
+              _this.$nextTick(() => {
+                _this.position = result.regeocode.addressComponent.township
+              })
+            }
           }
         })
       })
@@ -340,6 +358,7 @@ export default {
     this.getForecastSeven()
     this.getLiveForecast()
     this.getPosition()
+    // alert(this.position)
   }
 }
 </script>
