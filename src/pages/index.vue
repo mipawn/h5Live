@@ -126,6 +126,7 @@ export default {
       minTemp: [], // 最低温
       liveInfo: [], // 生活指数
       position: '',
+      len: []
     }
   },
   methods: {
@@ -318,14 +319,10 @@ export default {
     },
     getPosition () { // 获取地理位置
       this.position = '定位中...'
-      let len = []
       if (window.SZJSBridge) {
         PalauAPI.location.requestLocation(res => {
-          len.push(res.longitude)
-          len.push(res.latitude)
-        })
-      }
-      lazyAMapApiLoaderInstance.load().then(() => { // 使用高德原生API
+          let lon = [res.longitude,res.latitude]
+          lazyAMapApiLoaderInstance.load().then(() => { // 使用高德原生API
         // your code ...
         // let geolocation = new AMap.Geolocation({
         //   enableHighAccuracy: true,
@@ -341,7 +338,7 @@ export default {
         //   }
         // })
         var _this = this
-        geocoder.getAddress(lon, function(status, result) {
+        geocoder.getAddress(lon, (status, result) => {
           if (status === 'complete' && result.info === 'OK') {
             if (result && result.regeocode) {
               _this.$nextTick(() => {
@@ -350,7 +347,9 @@ export default {
             }
           }
         })
-      })
+        })
+        })
+      } 
     }
   },
   mounted () {
@@ -358,7 +357,6 @@ export default {
     this.getForecastSeven()
     this.getLiveForecast()
     this.getPosition()
-    // alert(this.position)
   }
 }
 </script>
