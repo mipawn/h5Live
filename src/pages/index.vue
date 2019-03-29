@@ -3,7 +3,7 @@
   <div class="g_container">
     <div class="m_topbg bg-center" style="margin-top:0px">
       <div class="m_header" id="realTimeDiv">
-        <h2 class="m_tit">{{observTimes}}</h2>
+        <h2 class="m_tit" style="font-size: 14px">{{observTimes}}</h2>
         <div class="m_box fl w60">
           <div class="tempBox">
             <em class="tempture">{{weatherHeader.DryBulTemp}}</em>
