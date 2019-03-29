@@ -2,6 +2,7 @@
     if(!window.localStorage){
         alert('不支持localstorage，抽奖无法启动！');
     }
+    
     // 处理 localstorage 中奖数据
     var local_handle = {
         local_item: "lottery_datas",
