@@ -64,6 +64,8 @@
  body {
      font: 1em/1.2 Helvetica, Tahoma, Arial, Hiragino Sans GB, STXihei, "Microsoft YaHei", SimSun, Heiti, sans-serif;
      color: #fff;
+     background: url(../images/background.jpg) no-repeat;
+     background-size: 100% 100%;
  }
  .clearfix {
      float: none;
@@ -266,7 +268,7 @@
      /* background: url(../images/background.jpg) no-repeat top; */
  }
  .bg-top{
-    background: url(../images/background.jpg) no-repeat top;
+    /* background: url(../images/background.jpg) no-repeat top; */
  }
  .bg-center{
     background: url(../images/background.jpg) no-repeat center; 

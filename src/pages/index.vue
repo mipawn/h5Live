@@ -1,7 +1,7 @@
 
 <template>
   <div class="g_container">
-    <div class="m_topbg bg-center" style="margin-top:0px">
+    <div class="m_topbg " style="margin-top:0px">
       <div class="m_header" id="realTimeDiv">
         <h2 class="m_tit" style="font-size: 14px">{{observTimes}}</h2>
         <div class="m_box fl w60">
@@ -28,12 +28,12 @@
     </div>
     <!-- 顶部结束 -->
     <!-- 短期预报开始 -->
-    <div class="m_block mb_short bg-center" id="shortTimeDiv">
+    <div class="m_block mb_short" id="shortTimeDiv">
       <div class="m_tit">短期预报</div>
       <p class="m_detail">{{textForecast}}</p>
     </div>
     <!-- 短期预报结束 -->
-    <div class="m_block mb_7day bg-center">
+    <div class="m_block mb_7day">
       <div class="m_tit">七天预报</div>
       <div class="m_content" id="7dayWrap" style="overflow-x: scroll" >
         <table class="m_table day7_tab" id="forecast7dayTab" style="transition-property: -webkit-transform; transform-origin: 0px 0px; transform: translate3d(0px, 0px, 0px);">
@@ -71,7 +71,7 @@
         </table>
       </div>
     </div>
-    <div class="m_block mb_index bg-center">
+    <div class="m_block mb_index">
       <div class="m_tit">生活指数</div>
       <table class="index_tab" id="lifeIndexDiv">
         <tbody>
@@ -358,10 +358,9 @@ export default {
     },
     getTextForecast() { // 获取短期预报
       this.$http({
-        url: '/xstq/forecast3Day.jspx',
+        url: 'http://item.xianghunet.com/index/weathering/shortforecast',
         method: 'get'
       }).then(res => {
-        console.log(res)
         if (res.result == 1) {
           this.textForecast = res.info
         }
