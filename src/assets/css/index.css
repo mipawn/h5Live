@@ -73,7 +73,7 @@
  /*页面样式定义*/
  
  .g_container {
-     background: url(../images/background.jpg) no-repeat center;
+     /* background: url(../images/background.jpg) no-repeat center; */
      background-position: 0 0;
      background-size: 100% auto;
      padding-bottom: 30px;
@@ -143,9 +143,8 @@
      width: 100%;
  }
  .ele_list li {
-     width: 50%;
      float: left;
-     margin: 10px 0px;
+     margin: 10px 10px 10px 0;
      white-space: nowrap;
  }
  .ele_list li i {
@@ -259,12 +258,18 @@
  
  /*短期预报*/
  
- .m_block,.m_topbg{
-     margin-top: 40px;
+ .m_block{
+     /* margin-top: 40px; */
      /* background: url(../images/background.jpg) no-repeat center; */
  }
  .mb_index {
-     background: url(../images/background.jpg) no-repeat top;
+     /* background: url(../images/background.jpg) no-repeat top; */
+ }
+ .bg-top{
+    background: url(../images/background.jpg) no-repeat top;
+ }
+ .bg-center{
+    background: url(../images/background.jpg) no-repeat center; 
  }
  .m_block .m_tit {
      height: 40px;
@@ -279,9 +284,10 @@
  }
  .mb_short .m_detail {
      border-top: 1px solid rgba(255, 255, 255, 0.4);
-     padding: 0px 1em;
+     padding: 10px 1em 0;
      line-height: 2em;
      text-indent: 2em;
+     box-sizing: border-box;
  }
  
  /*七天预报*/
@@ -398,7 +404,7 @@
      position:absolute;
      width:100%;
      min-height:100%;
-     background: url(../images/background.jpg) no-repeat center;
+     /* background: url(../images/background.jpg) no-repeat center; */
      background-position: 0 0;
      background-size: 100% auto;
  }

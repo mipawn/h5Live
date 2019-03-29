@@ -1,17 +1,18 @@
 
 <template>
   <div class="g_container">
-    <div class="m_topbg" style="margin-top:0px">
+    <div class="m_topbg bg-center" style="margin-top:0px">
       <div class="m_header" id="realTimeDiv">
+        <h2 class="m_tit">{{observTimes}}</h2>
         <div class="m_box fl w60">
           <div class="tempBox">
             <em class="tempture">{{weatherHeader.DryBulTemp}}</em>
             <b class="unit"></b>
           </div>
           <ul class="ele_list clearfix">
-            <li><i class="i_tag0"></i>{{weatherHeader.Precipitation}}</li>
-            <li><i class="i_tag1"></i>{{weatherHeader.RelHumidity}}</li>
-            <li><i class="i_tag3"></i>{{weatherHeader.StationPress}}</li>
+            <li><i class="i_tag0"></i>{{weatherHeader.Precipitation}}（降水）</li>
+            <li><i class="i_tag1"></i>{{weatherHeader.RelHumidity}}（相对湿度）</li>
+            <li><i class="i_tag3"></i>{{weatherHeader.StationPress}}（气压）</li>
           </ul>
         </div>
         <div class="m_box fl w40">
@@ -27,18 +28,18 @@
     </div>
     <!-- 顶部结束 -->
     <!-- 短期预报开始 -->
-    <!-- <div class="m_block mb_short" id="shortTimeDiv">
+    <div class="m_block mb_short bg-center" id="shortTimeDiv">
       <div class="m_tit">短期预报</div>
-      <p class="m_detail">今天下午到夜里多云；明天白天晴到多云，夜里多云转阴；后天阴有雨。偏南风3～4级。明天早晨最低气温8～9度，明天白天最高气温22～23度。明天平均相对湿度75%。</p>
-    </div> -->
+      <p class="m_detail">{{textForecast}}</p>
+    </div>
     <!-- 短期预报结束 -->
-    <div class="m_block mb_7day ">
+    <div class="m_block mb_7day bg-center">
       <div class="m_tit">七天预报</div>
-      <div class="m_content" id="7dayWrap" style="overflow-x: scroll">
+      <div class="m_content" id="7dayWrap" style="overflow-x: scroll" >
         <table class="m_table day7_tab" id="forecast7dayTab" style="transition-property: -webkit-transform; transform-origin: 0px 0px; transform: translate3d(0px, 0px, 0px);">
             <tbody>
               <tr>
-                <td v-for="(item, key) in forecastSevenList" :key="key">{{item.week}}<br>{{key}}</td>
+                <td  v-for="(item, key) in forecastSevenList" :key="key">{{item.week}}<br>{{key}}</td>
               </tr>
               <tr>
                 <td v-for="(item, key) in forecastSevenList" :key="key">{{item.am.weather}}</td>
@@ -70,7 +71,7 @@
         </table>
       </div>
     </div>
-    <div class="m_block mb_index">
+    <div class="m_block mb_index bg-center">
       <div class="m_tit">生活指数</div>
       <table class="index_tab" id="lifeIndexDiv">
         <tbody>
@@ -80,7 +81,7 @@
             </td>
           </tr>
         <!-- 指数详情end -->
-        </tbody>
+        </tbody >
           <tr v-if="liveInfo.length > 0">
             <td>
               <img class="index_img" src="../assets/images/indexicon_0.png" :alt="liveInfo[0].name">
@@ -111,7 +112,7 @@
           </tr>
       </table>
     </div>
-    <div style="text-align:center;padding:30px 0 0;">萧山天气数据由萧山气象台提供</div>
+    <div class="bg-top" style="text-align:center;padding:30px 0 0;">萧山天气数据由萧山气象台提供</div>
   </div>
 </template>
 
@@ -125,8 +126,10 @@ export default {
       maxTemp: [], // 最高温
       minTemp: [], // 最低温
       liveInfo: [], // 生活指数
-      position: '',
-      len: []
+      position: '', // 位置
+      len: [], // 经纬度
+      textForecast: '', // 短文预报
+      observTimes: ''// 发布时间
     }
   },
   methods: {
@@ -218,6 +221,7 @@ export default {
           weatherHeader.Precipitation = weatherHeader.Precipitation.replace('mm', '毫米')
           weatherHeader.StationPress = weatherHeader.StationPress.replace('hpa', '百帕')
           this.weatherHeader = weatherHeader
+          this.observTimes = res.observTimes
         } else {
           this.weatherHeader = []
         }
@@ -343,6 +347,7 @@ export default {
             if (result && result.regeocode) {
               _this.$nextTick(() => {
                 _this.position = result.regeocode.addressComponent.township
+                document.title = result.regeocode.addressComponent.township
               })
             }
           }
@@ -350,10 +355,24 @@ export default {
         })
         })
       } 
+    },
+    getTextForecast() { // 获取短期预报
+      this.$http({
+        url: '/xstq/forecast3Day.jspx',
+        method: 'get'
+      }).then(res => {
+        console.log(res)
+        if (res.result == 1) {
+          this.textForecast = res.info
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     }
   },
   mounted () {
     this.getHeader()
+    this.getTextForecast()
     this.getForecastSeven()
     this.getLiveForecast()
     this.getPosition()
