@@ -346,8 +346,10 @@ export default {
           if (status === 'complete' && result.info === 'OK') {
             if (result && result.regeocode) {
               _this.$nextTick(() => {
-                _this.position = result.regeocode.addressComponent.township
-                document.title = result.regeocode.addressComponent.township
+                let position = result.regeocode.addressComponent.township.replace('镇','')
+                position = position.replace('街道', '') // 去掉 街道 和 镇
+                _this.position = position
+                document.title = position
               })
             }
           }
