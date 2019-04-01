@@ -45,6 +45,8 @@ export default {
             if (type === 1) {
                 return '图文'
             } else if (type === 2) {
+                return '直播'
+            } else if (type === 3) {
                 return '视频'
             }
         }

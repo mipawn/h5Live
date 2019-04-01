@@ -1,9 +1,9 @@
 <template>
   <div class="home">
     <img v-if="details.window_status == 1 && downCount > 0" :src="details.window_src" alt="" class="hello" @click="closePackage">
-    <!-- <div class="ad" v-if="downCount == 0">
+    <div class="ad" v-if="downCount == 0">
       广告
-    </div> -->
+    </div>
     <header id="live" v-if="downCount == 0" @click="closePackage">
       <player></player>
     </header>

@@ -254,6 +254,7 @@ export default {
           } else if(this.type == 3) { // 重播
             this.isLive = false
             this.source = res.data.data.live_src
+            this.playTime = true
             this.$nextTick(() => {
               this.init() // 加载播放器
             })

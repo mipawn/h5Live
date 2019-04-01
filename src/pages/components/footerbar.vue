@@ -59,6 +59,7 @@ export default {
           }),
           method: 'post'
         }).then(res => {
+            alert(JSON.stringify(res))
           if (res.data.code == 200) {
             this.$message({
               message: '评论成功',
