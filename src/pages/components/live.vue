@@ -71,9 +71,10 @@ export default {
           })
         } else { // 在萧山app未登录
           window.PalauAPI.user.login(res => {
-            if (res == 1) {
-              this.$router.go(0)
-            }
+            setTimeout(() => {
+                this.uid = window.PalauAPI.user.userInfo().uid
+                this.getBroadcast()
+            }, 100);
           })
         }
       } else { // 在微信

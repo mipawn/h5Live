@@ -23,18 +23,22 @@ export default new Router({
       children: [
         {
           path: 'live',
+          name: 'live',
           component: live
         },
         {
           path: 'chat',
+          name: 'chat',
           component: chat
         },
         {
           path: 'intro',
+          name: 'intro',
           component: intro
         },
         {
           path: 'ago',
+          name: 'ago',
           component: ago
         }
       ]

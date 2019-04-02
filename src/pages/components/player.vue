@@ -185,22 +185,23 @@ export default {
                         {"name":"fullScreenButton","align":"tr","x":10,"y":10},
                         ]}
         ],
-        // components: [
-        //   {
-        //   name: 'StartADComponent',
-        //   type: AliPlayerComponent.StartADComponent,
-        //   args: ['https://img.alicdn.com/tfs/TB1byi8afDH8KJjy1XcXXcpdXXa-1920-514.jpg', 'https://promotion.aliyun.com/ntms/act/videoai.html', 3]
-        // }, 
-        // {
-        //   name: 'PauseADComponent',
-        //   type: AliPlayerComponent.PauseADComponent,
-        //   args: ['https://img.alicdn.com/tfs/TB1byi8afDH8KJjy1XcXXcpdXXa-1920-514.jpg', 'https://promotion.aliyun.com/ntms/act/videoai.html']
-        // },
+        components: [
+        {
+          name: 'StartADComponent',
+          type: AliPlayerComponent.StartADComponent,
+          args: ['https://img.alicdn.com/tfs/TB1byi8afDH8KJjy1XcXXcpdXXa-1920-514.jpg', 'https://promotion.aliyun.com/ntms/act/videoai.html', 3]
+        }, 
+        {
+          name: 'PauseADComponent',
+          type: AliPlayerComponent.PauseADComponent,
+          args: ['https://img.alicdn.com/tfs/TB1byi8afDH8KJjy1XcXXcpdXXa-1920-514.jpg', 'https://promotion.aliyun.com/ntms/act/videoai.html']
+        },
         // {
         //   name: 'AliplayerDanmuComponent',
         //   type: AliPlayerComponent.AliplayerDanmuComponent,
         //   args: [this.danmukuList]
-        // }]
+        // }
+        ]
       })
       // player.on('cancelFullScreen', ()=> {
         
@@ -253,7 +254,7 @@ export default {
             }
           } else if(this.type == 3) { // 重播
             this.isLive = false
-            this.source = res.data.data.live_src
+            this.source = res.data.data.vod_url
             this.playTime = true
             this.$nextTick(() => {
               this.init() // 加载播放器

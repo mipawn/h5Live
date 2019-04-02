@@ -10,9 +10,10 @@
               <i :class="['iconfont', 'icon-good', item.like_num && item.like_num.length? 'hot': '']" @click="likeUp(index)"></i>
             </div>
           </div>
-          <div class="create-time">{{item.create_at}}</div>
+          <div class="create-time">{{item.create_at}}<a></a></div>
         </header>
-        <div class="qq_face" v-html="item.content"><a class=""></a></div>
+        <div class="qq_face" v-html="item.content"></div>
+        <div class="reply" v-if="item.sub" v-for="(itemChild, index) in item.sub" :key="index"><span style="color:#407d40;">{{itemChild.nickname}}</span>：{{itemChild.content}}</div>
       </li>
     </ul>
   </div>
@@ -33,6 +34,7 @@ export default {
   },
   methods: {
     getComment () { // 获取评论列表
+    // alert()
       this.$axios({
         url: this.baseUrl + 'v1/live/comment',
         data: this.$qs.stringify({
@@ -48,6 +50,8 @@ export default {
           }
           this.commentList = commentList
         }
+      }).catch(err => {
+          console.log(err)
       })
     },
     likeUp (index) { // 点赞
@@ -70,15 +74,19 @@ export default {
             method: 'post'
           })
         } else { // 在萧山app未登录
-          window.PalauAPI.user.login()
+          window.PalauAPI.user.login(() => {
+            setTimeout(() => {
+                this.uid = window.PalauAPI.user.userInfo().uid
+                this.getComment()
+            }, 100);
+          })
         }
       } else { // 在微信
         this.$message({
-          message: '请前往APP登录后评论',
+          message: '请前往APP登录后点赞',
           type: 'warning',
           center: true
         })
-        return
       }
     },
     handleEmoji (content) { // 将【困】转变为对应的 类名 qqface
@@ -148,9 +156,15 @@ export default {
 .hot
   color red
 </style>
-<style>
+<style scoped>
 .qq_face {
+  width: 100%;
+  overflow: hidden;
+  white-space:normal;
+  word-break:break-all;
+  word-wrap:break-word; 
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
 }
 .qq_face a {
@@ -161,9 +175,9 @@ export default {
     display: inline-block;
     width: 30px;
     height: 30px;
-    /* font-size: 0;
-    border-bottom: 1px solid #f0f0f0;
-    border-right: 1px solid #f0f0f0; */
+    font-size: 0;
+    /* border-bottom: 1px solid #f0f0f0; */
+    /* border-right: 1px solid #f0f0f0; */
     cursor: pointer;
 }
 .qq_face .qqface0 {
@@ -583,4 +597,31 @@ export default {
 .qq_face .qqface104 {
     background-position: -406px -174px
 }
+.reply {
+  width: 100%;
+  margin-top: 0.1rem;
+  margin-bottom: 0.1rem;
+  white-space:normal;
+  word-break:break-all;
+  word-wrap:break-word; 
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  background: #eee;
+  position: relative;
+  padding: 0.1rem;
+  box-sizing: border-box;
+  border-radius: 6px;
+}
+.reply::after{
+    content: '';
+    width: 0;
+    height: 0;
+    border-width: 0px 8px 10px 8px;
+    border-color: #eee transparent;
+    border-style: solid;
+    position: absolute;
+    left: 10px;
+    top: -8px;
+}   
 </style>

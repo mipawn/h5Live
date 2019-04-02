@@ -15,9 +15,9 @@
           </li>
         </ul>
       </div>
-      <router-view class="bg" @goLive="goLive" ></router-view>
+      <router-view class="bg" @goLive="goLive" ref="tab"></router-view>
     </section>
-    <footerbar :details="details" v-if="downCount == 0" ref="footerbar"></footerbar>
+    <footerbar :details="details" v-if="downCount == 0" ref="footerbar" @changeCommentList="changeCommentList"></footerbar>
     <div class="playCountDown" v-if="playCountDown && playId == id && type == 2" @click="closePackage">{{playCountDown}}</div>
   </div>
 </template>
@@ -113,6 +113,9 @@ export default {
           clearInterval(timer)
         }
       },1000)
+    },
+    changeCommentList () { // 重新读取评论列表
+      this.$refs.tab.getComment()
     }
   },
   mounted () {
@@ -132,6 +135,15 @@ export default {
   },
   updated () {
     this.playId = sessionStorage.playId
+    if(this.$route.name === 'live') {
+      this.idx = 0
+    } else if (this.$route.name === 'chat') {
+      this.idx = 1
+    } else if (this.$route.name === 'intro') {
+      this.idx = 2
+    } else if (this.$route.name === 'ago') {
+      this.idx = 3
+    }
   }
 }
 </script>

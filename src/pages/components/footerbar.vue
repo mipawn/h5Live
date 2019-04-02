@@ -4,6 +4,7 @@
       <div class="main">
         <div class="center">
           <input type="text" class="" placeholder="发表评论" v-model="content">
+          <!-- <div class="input" contenteditable ></div> -->
         </div>
         <div class="emoji-package" v-show="showEmoji">
           <div class="qq_face">
@@ -59,7 +60,6 @@ export default {
           }),
           method: 'post'
         }).then(res => {
-            alert(JSON.stringify(res))
           if (res.data.code == 200) {
             this.$message({
               message: '评论成功',
@@ -67,6 +67,7 @@ export default {
               center: true
             })
             this.content = ''
+            this.$emit('changeCommentList') // 重新读取评论列表
           } else {
             this.$message({
               message: '评论失败',
@@ -76,7 +77,11 @@ export default {
           }
         })
         } else {
-          window.PalauAPI.user.login()
+          window.PalauAPI.user.login(() => {
+              setTimeout(() => {
+                this.uid = window.PalauAPI.user.userInfo().uid
+            }, 100);
+          })
         }
       } else {
         this.$message({
@@ -204,12 +209,13 @@ div.footer-hide
           background #eee
           color #999
           width 100%
+          max-height 2rem
           border-radius .7rem
-          line-height .6rem
+          line-height .34rem
           padding 0 .2rem
-          overflow hidden
-          text-overflow ellipsis
           box-sizing border-box
+          outline none
+          overflow hidden
       .right
         display flex
         position relative
@@ -234,8 +240,8 @@ div.footer-hide
     width: 30px;
     height: 30px;
     font-size: 0;
-    border-bottom: 1px solid #f0f0f0;
-    border-right: 1px solid #f0f0f0;
+    /* border-bottom: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0; */
     cursor: pointer;
 }
 .qq_face .qqface0 {
