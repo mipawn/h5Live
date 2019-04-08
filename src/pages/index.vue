@@ -227,11 +227,12 @@ export default {
         }
       }).catch(err => {
         console.log('err', err)
-        this.$message({
-          message: '获取天气实况失败',
-          type: 'warning',
-          center: true
-        })
+        // this.$message({
+        //   message: '获取天气实况失败',
+        //   type: 'warning',
+        //   center: true
+        // })
+        this.noData()
       })
     },
     getForecastSeven () { // 获取7天数据
@@ -248,12 +249,12 @@ export default {
         this.forecastSevenList = forecastSevenList
         }
       }).catch(err => {
-        console.log('err', err)
-        this.$message({
-          message: '获取7天数据失败' + err,
-          type: 'warning',
-          center: true
-        })
+        // this.$message({
+        //   message: '获取7天数据失败' + err,
+        //   type: 'warning',
+        //   center: true
+        // })
+        this.noData()
       })
     },
     //时间格式
@@ -314,11 +315,12 @@ export default {
       }).then(res => {
         this.liveInfo = res.info
       }).catch(err => {
-        this.$message({
-          message: '获取生活预报失败',
-          type: 'warning',
-          center: true
-        })
+        // this.$message({
+        //   message: '获取生活预报失败',
+        //   type: 'warning',
+        //   center: true
+        // })
+        this.noData()
       })
     },
     getPosition () { // 获取地理位置
@@ -367,8 +369,17 @@ export default {
           this.textForecast = res.info
         }
       }).catch(err => {
-        console.log(err)
+        this.noData()
       })
+    },
+    noData () { // 无数据显示
+      if (this.weatherHeader === '' || this.liveInfo.length === 0 || this.observTimes === '' || this.textForecast === '') {
+        document.documentElement.getElementsByTagName('body')[0].innerText = '系统正在维护中'
+        document.documentElement.getElementsByTagName('body')[0].style.background = '#fff'
+        document.documentElement.getElementsByTagName('body')[0].style.color = '#000'
+        document.documentElement.getElementsByTagName('body')[0].style.paddingTop = '100px'
+        document.documentElement.getElementsByTagName('body')[0].style.textAlign = 'center'
+      }
     }
   },
   mounted () {
