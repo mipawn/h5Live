@@ -3,8 +3,8 @@
     <div class="main-position">
       <div class="main">
         <div class="center">
-          <input type="text" class="" placeholder="发表评论" v-model="content">
-          <!-- <div class="input" contenteditable ></div> -->
+          <!-- <input type="text" class="" placeholder="发表评论" v-model="content"> -->
+          <div class="input" contenteditable ref="input" placeholder="发表评论"></div>
         </div>
         <div class="emoji-package" v-show="showEmoji">
           <div class="qq_face">
@@ -46,6 +46,15 @@ export default {
   },
   methods: {
     sendComment () { //发送评论
+      let content = this.$refs.input.innerHTML
+      if (content === '') {
+          this.$message({
+              message: '请输入内容',
+              type: 'warning',
+              center: true
+          })
+          return
+      }
       if (window.SZJSBridge) {
         if(window.PalauAPI.user.userInfo().uid) {
           this.$axios({
@@ -54,7 +63,7 @@ export default {
             live_id: this.id,
             uid: this.userInfo.uid,
             pid: 0,
-            content: this.content,
+            content: content,
             nickname: this.userInfo.nickName,
             tel: this.userInfo.phoneNumber
           }),
@@ -123,7 +132,7 @@ export default {
       this.showEmoji = false
     },
     addImage (index, title) { // 添加图片 
-      this.content = this.content + this.emojiList[index].title
+      this.$refs.input.innerHTML += this.emojiList[index].title
     },
     setEmojiList () { // 设置表情库
       for (let i = 0; i < 105; i++) {
@@ -156,7 +165,6 @@ div.footer-hide
   width 100%
   .main-position
     height .8rem
-    line-height .8rem
     position absolute
     bottom 0
     left 0
@@ -168,7 +176,7 @@ div.footer-hide
       width 100%
       bottom 0
       background #fff
-      align-items flex-end
+      align-items center
       .emoji-package
         border-top 1px solid #ddd
         position absolute
@@ -205,17 +213,24 @@ div.footer-hide
         box-sizing border-box
         .sketch
           color #f33
-        input
+        .input
           background #eee
           color #999
           width 100%
-          max-height 2rem
-          border-radius .7rem
+          max-height 0.7rem
+          min-height 0.6rem
+          border-radius .1rem
           line-height .34rem
           padding 0 .2rem
           box-sizing border-box
           outline none
           overflow hidden
+          user-select:text;
+          -webkit-user-select:text;
+        .input:empty::before 
+            color light
+            content attr(placeholder)
+            line-height 0.6rem
       .right
         display flex
         position relative
