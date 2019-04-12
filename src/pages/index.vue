@@ -19,8 +19,8 @@ export default {
         }
     },
     methods: { 
-        toDetail (id,type) { // 查看详情
-            this.$router.push({path: '/home/live', query:{id:id,type:type}})
+        toDetail (id) { // 查看详情
+            this.$router.push({path: '/home/live', query:{id:id}})
         },
         getList () { // 获取列表
             this.$axios({

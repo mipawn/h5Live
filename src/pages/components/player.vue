@@ -19,149 +19,10 @@ export default {
       type: 1,
       details: '',
       id: '',
-      source: 'http://l.cztvcloud.com/channels/lantian/SXxiaoshan1/720p.m3u8', // 直播资源
+      source: '', // 直播资源
       playTime: false, // 是否到播放时间
       isLive: true, // 是否为直播
       playCountDown: '', // 播放倒计时
-      // danmukuList :[{
-      //   "mode": 1,
-      //   "text": "哈哈",
-      //   "stime": 1000,
-      //   "size": 25,
-      //   "color": 0xffffff
-      //   }, {
-      //     "mode": 1,
-      //     "text": "前方高能",
-      //     "stime": 2000,
-      //     "size": 25,
-      //     "color": 0xff0000
-      //   }, {
-      //     "mode": 1,
-      //     "text": "灵魂歌手",
-      //     "stime": 30000,
-      //     "size": 25,
-      //     "color": 0xff0000
-      //   }, {
-      //     "mode": 1,
-      //     "text": "这是弹幕2",
-      //     "stime": 4000,
-      //     "size": 25,
-      //     "color": 0x00c1de
-      //   }, {
-      //     "mode": 1,
-      //     "text": "神测试",
-      //     "stime": 5000,
-      //     "size": 25,
-      //     "color": 0x00c1de
-      //   }, {
-      //     "mode": 1,
-      //     "text": "顺手一划",
-      //     "stime": 10000,
-      //     "size": 25,
-      //     "color": 0x00c1de
-      //   }, {
-      //     "mode": 1,
-      //     "text": "哈哈",
-      //     "stime": 1000,
-      //     "size": 25,
-      //     "color": 0xffffff
-      //   }, {
-      //     "mode": 1,
-      //     "text": "哈哈",
-      //     "stime": 1000,
-      //     "size": 25,
-      //     "color": 0xffffff
-      //   }, {
-      //     "mode": 1,
-      //     "text": "哈哈",
-      //     "stime": 1000,
-      //     "size": 25,
-      //     "color": 0xffffff
-      //   }, {
-      //     "mode": 1,
-      //     "text": "哈哈",
-      //     "stime": 1000,
-      //     "size": 25,
-      //     "color": 0xffffff
-      //   }, {
-      //     "mode": 1,
-      //     "text": "哈哈",
-      //     "stime": 1000,
-      //     "size": 25,
-      //     "color": 0xffffff
-      //   }, {
-      //     "mode": 1,
-      //     "text": "哈哈",
-      //     "stime": 1000,
-      //     "size": 25,
-      //     "color": 0xffffff
-      //   }, {
-      //     "mode": 1,
-      //     "text": "哈哈",
-      //     "stime": 1000,
-      //     "size": 25,
-      //     "color": 0xffffff
-      //   }, {
-      //     "mode": 1,
-      //     "text": "哈哈",
-      //     "stime": 1000,
-      //     "size": 25,
-      //     "color": 0xffffff
-      //   }, {
-      //     "mode": 1,
-      //     "text": "哈哈",
-      //     "stime": 1000,
-      //     "size": 25,
-      //     "color": 0xffffff
-      //   }, {
-      //     "mode": 1,
-      //     "text": "哈哈",
-      //     "stime": 1000,
-      //     "size": 25,
-      //     "color": 0xffffff
-      //   }, {
-      //     "mode": 1,
-      //     "text": "哈哈",
-      //     "stime": 1000,
-      //     "size": 25,
-      //     "color": 0xffffff
-      //   }, {
-      //     "mode": 1,
-      //     "text": "哈哈",
-      //     "stime": 1000,
-      //     "size": 25,
-      //     "color": 0xffffff
-      //   }, {
-      //     "mode": 1,
-      //     "text": "哈哈",
-      //     "stime": 1000,
-      //     "size": 25,
-      //     "color": 0xffffff
-      //   }, {
-      //     "mode": 1,
-      //     "text": "哈哈",
-      //     "stime": 1000,
-      //     "size": 25,
-      //     "color": 0xffffff
-      //   }, {
-      //     "mode": 1,
-      //     "text": "哈哈",
-      //     "stime": 1000,
-      //     "size": 25,
-      //     "color": 0xffffff
-      //   }, {
-      //     "mode": 1,
-      //     "text": "哈哈",
-      //     "stime": 1000,
-      //     "size": 25,
-      //     "color": 0xffffff
-      //   }, {
-      //     "mode": 1,
-      //     "text": "哈哈",
-      //     "stime": 1000,
-      //     "size": 25,
-      //     "color": 0xffffff
-      // }]
     }
   },
   methods: {
@@ -171,7 +32,7 @@ export default {
         source: this.source,
         width: '100%',
         height: '100%',
-        autoplay: true,
+        autoplay: false,
         isLive: this.isLive, 
         rePlay: false,
         playsinline: true,
@@ -186,21 +47,16 @@ export default {
                         ]}
         ],
         components: [
-        {
-          name: 'StartADComponent',
-          type: AliPlayerComponent.StartADComponent,
-          args: ['https://img.alicdn.com/tfs/TB1byi8afDH8KJjy1XcXXcpdXXa-1920-514.jpg', 'https://promotion.aliyun.com/ntms/act/videoai.html', 3]
-        }, 
+        // {
+        //   name: 'StartADComponent',
+        //   type: AliPlayerComponent.StartADComponent,
+        //   args: []
+        // }, 
         {
           name: 'PauseADComponent',
           type: AliPlayerComponent.PauseADComponent,
-          args: ['https://img.alicdn.com/tfs/TB1byi8afDH8KJjy1XcXXcpdXXa-1920-514.jpg', 'https://promotion.aliyun.com/ntms/act/videoai.html']
-        },
-        // {
-        //   name: 'AliplayerDanmuComponent',
-        //   type: AliPlayerComponent.AliplayerDanmuComponent,
-        //   args: [this.danmukuList]
-        // }
+          args: ['http://h5.xianghunet.com/live/static/img/ad-video.jpg']
+        }
         ]
       })
       // player.on('cancelFullScreen', ()=> {
@@ -217,7 +73,8 @@ export default {
       }).then(res => {
         if (res.data.code === 200) {
           this.details = res.data.data
-          if (this.type == 2) { // 直播
+          this.type = res.data.data.type
+          if (this.type == 1) { // 图文直播判断倒计时
             this.isLive = true
             let timeNow = new Date().getTime() // 当前时间戳
             let startTime = new Date(res.data.data.start_time).getTime() // 直播开始时间戳
@@ -238,6 +95,7 @@ export default {
                   this.source = res.data.data.live_src
                   this.playCountDown = 0
                   this.playTime = true
+                  this.type = 2
                   sessionStorage.playCountDown = ''
                   this.$nextTick(() => {
                     this.init() // 加载播放器
@@ -259,6 +117,14 @@ export default {
             this.$nextTick(() => {
               this.init() // 加载播放器
             })
+          } else if (this.type == 2) { // 直播开启
+            this.source = res.data.data.live_src
+            this.playCountDown = 0
+            this.playTime = true
+            sessionStorage.playCountDown = ''
+            this.$nextTick(() => {
+              this.init() // 加载播放器
+            })
           }
         }
       }).catch(err => {
@@ -267,10 +133,9 @@ export default {
     }
   },
   mounted () {
-    this.type = this.$route.query.type
     this.id = this.$route.query.id
-    this.isLive = this.type == 2 ? true : false
     this.getDetails()
+    this.isLive = this.type == 2 ? true : false
     sessionStorage.playId = this.id
   },
   beforeRouteLeave (to, from, next) {

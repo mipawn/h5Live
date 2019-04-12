@@ -14,7 +14,7 @@ import qs from 'qs'
 
 Vue.use(JSBridge)
 Vue.use(ElementUI)
-const baseUrl = 'http://168.100.188.38/'
+const baseUrl = 'http://admin.wisexs.com/'
 Vue.prototype.baseUrl = baseUrl
 Vue.prototype.$axios = axios
 Vue.prototype.$qs = qs

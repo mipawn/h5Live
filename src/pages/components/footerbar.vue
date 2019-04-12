@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">
+  <div class="footer" >
     <div class="main-position">
       <div class="main">
         <div class="center">
@@ -12,7 +12,7 @@
           </div>
         </div>
         <div class="right">
-          <div class="share" @click="doShare">
+          <div class="share" @click="doShare" v-if="uid !== -1000">
             <i class="iconfont icon-share"></i>
           </div>
           <div class="emoji" @click="showPackage">
@@ -20,6 +20,11 @@
           </div>
           <div class="send" @click="sendComment">发送</div>
         </div>
+      </div>
+      <div class="ad-footer" wx:if="adFooter">
+        <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.wisexs.xstv&amp;channel=0002160650432d595942&amp;fromcase=60001">
+            <img src="http://app.xianghunet.com/static/330109/share.png" alt="">
+        </a>
       </div>
     </div>
   </div>
@@ -35,7 +40,9 @@ export default {
       showEmoji: false, // 是否显示选择表情
       emojiList:[], // emoji表情库
       userInfo: '', // 用户信息
-      id: '' 
+      id: '' ,
+      uid: -1000,
+      adFooter: false // 底部广告
     }
   },
   props: {
@@ -53,7 +60,7 @@ export default {
               type: 'warning',
               center: true
           })
-          return
+      return
       }
       if (window.SZJSBridge) {
         if(window.PalauAPI.user.userInfo().uid) {
@@ -75,7 +82,8 @@ export default {
               type: 'success',
               center: true
             })
-            this.content = ''
+            this.$refs.input.innerText = ''
+            this.showEmoji = false
             this.$emit('changeCommentList') // 重新读取评论列表
           } else {
             this.$message({
@@ -143,12 +151,19 @@ export default {
     getUserInfo() { // 获取用户信息
       if (window.SZJSBridge) {
           this.userInfo = window.PalauAPI.user.userInfo()
-        this.uid = window.PalauAPI.user.userInfo().uid || -1000
+          this.uid = window.PalauAPI.user.userInfo().uid || -1000
+          this.$nextTick(() => {
+              this.adFooter = false
+          })
+      } else {
+          this.uid = -1000
+          this.$nextTick(() => {
+              this.adFooter = true
+          })
       }
     },
   },
   mounted () {
-    this.id = this.$route.query.id
     this.setEmojiList()
     this.getUserInfo()
   }
@@ -163,6 +178,15 @@ div.footer-hide
   bottom 0
   left 0
   width 100%
+  .ad-footer
+    position absolute
+    left 0
+    right 0
+    bottom 0
+    z-index 999999
+    font-size 100%
+    img 
+      width 100%
   .main-position
     height .8rem
     position absolute
@@ -220,13 +244,14 @@ div.footer-hide
           max-height 0.7rem
           min-height 0.6rem
           border-radius .1rem
-          line-height .34rem
+          line-height .46rem
           padding 0 .2rem
           box-sizing border-box
           outline none
           overflow hidden
           user-select:text;
           -webkit-user-select:text;
+          font-size 0.3rem;
         .input:empty::before 
             color light
             content attr(placeholder)
@@ -343,6 +368,7 @@ div.footer-hide
 
 .qq_face .qqface21 {
     background-position: -174px -29px
+    
 }
 
 .qq_face .qqface22 {

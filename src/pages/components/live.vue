@@ -18,17 +18,20 @@
       <div class="live-photo" v-if="item.media_type == 1 && item.figure && item.figure.length < 2">
         <img :src="itemChild" alt="" v-for="(itemChild, indexChild) in item.figure" :key="indexChild" @click="showFullScreen(itemChild)">
       </div>
-      <div class="live-photo-more" v-else-if="item.media_type == 1 && item.figure &&item.figure.length > 1">
+      <div class="live-photo-line" v-else-if="item.media_type == 1 && item.figure &&item.figure.length > 1 && item.figure.length < 4">
+        <img :src="itemChild" alt="" v-for="(itemChild, indexChild) in item.figure" :key="indexChild" @click="showFullScreen(itemChild)">
+      </div>
+      <div class="live-photo-more" v-else-if="item.media_type == 1 && item.figure &&item.figure.length > 3">
         <img :src="itemChild" alt="" v-for="(itemChild, indexChild) in item.figure" :key="indexChild" @click="showFullScreen(itemChild)">
         <div id="fullScreen-photo"  v-if="fullScreen" @click="showFullScreen">
           <img :src="fullScreenPhoto" alt="">
         </div>
       </div>
-      <div v-else-if="item.media_type == 3" class="live-photo">
+      <div v-else-if="item.media_type == 3" class="live-photo" style="height:1rem;">
         <audio :src="item.audio_src" controls="controls"></audio>
       </div>
       <div class="live-photo" v-if="item.media_type == 2">
-        <video :src="item.video_src" controls></video>
+        <video :src="item.video_src" controls :poster="item.default_src"></video>
       </div>
     </div>
   </div>
@@ -110,8 +113,7 @@ export default {
       })
     },
     getType () { // 获取直播的类型 1图文 2视频
-      let {type, id} = this.$route.query
-      this.type = type
+      let {id} = this.$route.query
       this.id = id
     },
     getDetails () { // 获取详情
@@ -124,6 +126,7 @@ export default {
       }).then(res => {
         if (res.data.code === 200) {
           this.details = res.data.data
+          this.type = res.data.data.type
         }
       }).catch(err => {
         console.log(err)
@@ -144,6 +147,62 @@ export default {
     this.getType()
     this.getBroadcast()
     this.getDetails()
+    this.$axios({
+          url: 'http://h5.xianghunet.com/wx/wx_Signature.php',
+          data: this.$qs.stringify({
+            href: window.location.href
+          }),
+          method: 'post'
+        }).then(res => {
+            res.data.jsApiList = ['onMenuShareAppMessage', 'onMenuShareTimeline']
+            wx.config(res.data)
+            var that = this
+            wx.ready(() => {
+                var news_title = document.title
+                var news_link = window.location.href
+                var news_image = this.details.img_src
+                var news_intro = "活动直播"
+                wx.onMenuShareAppMessage({
+                title: news_title,
+                desc: news_intro,
+                link: news_link,
+                imgUrl: news_image,
+                success () {
+                  that.$message({
+                    message: '分享成功',
+                    type: 'success',
+                    center: true
+                  })
+                },
+                fail () {
+                    that.$message({
+                        message: '分享失败',
+                        type: 'warning',
+                        center: true
+                    })
+                }
+                })
+                wx.onMenuShareTimeline({
+                    title: news_title,
+                    link: news_link,
+                    imgUrl: news_image,
+                    success () {
+                    that.$message({
+                        message: '分享成功',
+                        type: 'success',
+                        center: true
+                    })
+                    },
+                    fail () {
+                        that.$message({
+                            message: '分享失败',
+                            type: 'warning',
+                            center: true
+                        })
+                    }
+                })
+            })  
+        })
   },
   
 }
@@ -203,6 +262,16 @@ export default {
   img 
     width 31%
     height 40%
+    margin-right 0.1rem
+.live-photo-line 
+  height 1.2rem
+  margin-top 0.2rem
+  display flex 
+  padding-left 1.1rem
+  flex-wrap wrap
+  img 
+    width 31%
+    height 100%
     margin-right 0.1rem
 .text-desc
   text-overflow ellipsis

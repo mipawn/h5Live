@@ -1,11 +1,12 @@
 <template>
   <div class="home">
     <img v-if="details.window_status == 1 && downCount > 0" :src="details.window_src" alt="" class="hello" @click="closePackage">
-    <div class="ad" v-if="downCount == 0">
-      广告
+    <div class="ad" v-if="downCount == 0" @click="download">
+      <img src="../assets/imgs/ad-text.png" alt="">
     </div>
-    <header id="live" v-if="downCount == 0" @click="closePackage">
+    <header id="live" v-if="downCount == 0 || details.type == 2" @click="closePackage" style="position:relative;">
       <player></player>
+      <div class="playCountDown" v-if="playCountDown && playId == id && type == 1" @click="closePackage">{{playCountDown}}</div>
     </header>
     <section v-if="downCount == 0" @click="closePackage">
       <div class="nav">
@@ -18,7 +19,6 @@
       <router-view class="bg" @goLive="goLive" ref="tab"></router-view>
     </section>
     <footerbar :details="details" v-if="downCount == 0" ref="footerbar" @changeCommentList="changeCommentList"></footerbar>
-    <div class="playCountDown" v-if="playCountDown && playId == id && type == 2" @click="closePackage">{{playCountDown}}</div>
   </div>
 </template>
 
@@ -94,6 +94,8 @@ export default {
       }).then(res => {
         if (res.data.code === 200) {
           this.details = res.data.data
+          this.type = res.data.data.type
+          document.title = res.data.data.title
           if(res.data.data.window_status == 1) {
             this.downCount = 3
             this.countDown() // 开启倒计时
@@ -116,12 +118,14 @@ export default {
     },
     changeCommentList () { // 重新读取评论列表
       this.$refs.tab.getComment()
+    },
+    download () {
+      window.location.href = 'https://a.app.qq.com/o/simple.jsp?pkgname=com.wisexs.xstv'
     }
   },
   mounted () {
-    let {id, type} = this.$route.query
+    let {id} = this.$route.query
     this.id = id
-    this.type = type
     this.getUserInfo()
     this.getDetails()
     let timer = setInterval(() => {
@@ -160,17 +164,20 @@ export default {
   overflow-y auto
   .ad
     height 1.6rem
-    background #dddddd
+    background url(../assets/imgs/ad-bg.png) no-repeat
+    background-size cover
+    display flex
+    justify-content center
+    align-items center
+    img 
+      height 1rem
+      max
   header
     padding-top 56%
     height 0 !important
     border-bottom 1px solid #dddddd
     position relative
     background #000
-    >div
-      position absolute
-      top 0
-      height 100%
   section
     flex 1
     overflow hidden
@@ -203,13 +210,16 @@ export default {
   height 100%
   object-fit cover
 .playCountDown
-  position fixed
+  position absolute
   z-index 200
-  background red
-  top 0.2rem
-  right 0.4rem
+  background rgba(0, 0, 0, 0.6)
+  bottom 0.3rem
+  left 50%
+  transform translateX(-50%)
   color #fff
   display flex
-  padding 0.1rem
+  padding 0.14rem
   border-radius 0.1rem
+  font-size 0.4rem
+  white-space nowrap
 </style>
