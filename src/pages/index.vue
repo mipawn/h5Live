@@ -38,6 +38,15 @@ export default {
     },
     mounted () {
         document.title = '现场直播'
+          if (navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+            const hack = document.createElement('iframe')
+            hack.style.display = 'none'
+            hack.src = '@/assets/fixIosTitle.html? r =' + Math.random()
+            document.body.appendChild(hack)
+            setTimeout(() => {
+              document.body.removeChild(hack)
+            },300)
+          }
         this.getList()
     },
     filters:{
