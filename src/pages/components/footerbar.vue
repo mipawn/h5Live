@@ -21,7 +21,7 @@
           <div class="send" @click="sendComment">发送</div>
         </div>
       </div>
-      <div class="ad-footer" wx:if="adFooter">
+      <div class="ad-footer" v-if="adFooter">
         <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.wisexs.xstv&amp;channel=0002160650432d595942&amp;fromcase=60001">
             <img src="http://app.xianghunet.com/static/330109/share.png" alt="">
         </a>
@@ -140,6 +140,7 @@ export default {
       this.showEmoji = false
     },
     addImage (index, title) { // 添加图片 
+      this.$refs.input.focus()
       this.$refs.input.innerHTML += this.emojiList[index].title
     },
     setEmojiList () { // 设置表情库
@@ -164,6 +165,7 @@ export default {
     },
   },
   mounted () {
+    this.id = this.$route.query.id
     this.setEmojiList()
     this.getUserInfo()
   }

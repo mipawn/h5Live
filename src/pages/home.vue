@@ -1,12 +1,15 @@
 <template>
   <div class="home">
     <img v-if="details.window_status == 1 && downCount > 0" :src="details.window_src" alt="" class="hello" @click="closePackage">
-    <div class="ad" v-if="downCount == 0" @click="download">
+    <div class="ad" v-if="downCount == 0">
       <img src="../assets/imgs/ad-text.png" alt="">
+      <div class="onlineNum">在线人数
+        <div>{{details.liveClick}}</div>
+      </div>
     </div>
-    <header id="live" v-if="downCount == 0 || details.type == 2" @click="closePackage" style="position:relative;">
+    <header id="live" v-if="downCount == 0" @click="closePackage" style="position:relative;">
       <player></player>
-      <div class="playCountDown" v-if="playCountDown && playId == id && type == 1" @click="closePackage">{{playCountDown}}</div>
+      <div class="playCountDown" v-if="playCountDown && type == 1" @click="closePackage">{{playCountDown}}</div>
     </header>
     <section v-if="downCount == 0" @click="closePackage">
       <div class="nav">
@@ -60,8 +63,7 @@ export default {
       },
       userInfo: '', // 用户信息
       downCount: 2, // 开机动画时间 s
-      playCountDown : '', // 倒计时
-      playId: sessionStorage.playId // 播放视频id
+      playCountDown : '' // 倒计时
     }
   },
   methods: {
@@ -96,6 +98,15 @@ export default {
           this.details = res.data.data
           this.type = res.data.data.type
           document.title = res.data.data.title
+          if (navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+            const hack = document.createElement('iframe')
+            hack.style.display = 'none'
+            hack.src = '@/assets/fixIosTitle.html? r =' + Math.random()
+            document.body.appendChild(hack)
+            setTimeout(() => {
+              document.body.removeChild(hack)
+            },300)
+          }
           if(res.data.data.window_status == 1) {
             this.downCount = 3
             this.countDown() // 开启倒计时
@@ -119,26 +130,32 @@ export default {
     changeCommentList () { // 重新读取评论列表
       this.$refs.tab.getComment()
     },
-    download () {
-      window.location.href = 'https://a.app.qq.com/o/simple.jsp?pkgname=com.wisexs.xstv'
+    onlineNumAdd () { // 在线人数增加
+      this.$axios({
+        url: this.baseUrl + 'v1/live/click_num',
+        params: {
+          id: this.id
+        },
+        method: 'get'
+      })
     }
   },
   mounted () {
     let {id} = this.$route.query
     this.id = id
     this.getUserInfo()
+    this.onlineNumAdd()
     this.getDetails()
     let timer = setInterval(() => {
       if (sessionStorage.playCountDown !== 0) {
         this.playCountDown = sessionStorage.playCountDown
       } else {
         clearInterval(timer)
-        this.playCountDown = false
+        this.playCountDown = 0
       }
       },1000)
   },
   updated () {
-    this.playId = sessionStorage.playId
     if(this.$route.name === 'live') {
       this.idx = 0
     } else if (this.$route.name === 'chat') {
@@ -167,8 +184,11 @@ export default {
     background url(../assets/imgs/ad-bg.png) no-repeat
     background-size cover
     display flex
-    justify-content center
+    justify-content space-between
+    padding 0 0.6rem
+    box-sizing border-box
     align-items center
+    position relative
     img 
       height 1rem
       max
@@ -203,6 +223,7 @@ export default {
     .bg
       flex 1
       overflow auto
+      paddint-bottom 1.7rem
 .hello 
   position fixed
   z-index 1000
@@ -211,7 +232,7 @@ export default {
   object-fit cover
 .playCountDown
   position absolute
-  z-index 200
+  z-index 999999
   background rgba(0, 0, 0, 0.6)
   bottom 0.3rem
   left 50%
@@ -222,4 +243,15 @@ export default {
   border-radius 0.1rem
   font-size 0.4rem
   white-space nowrap
+.onlineNum 
+  display flex
+  flex-direction column
+  box-sizing border-box
+  justify-content  flex-end
+  height 1rem
+  font-size 0.3rem
+  z-index 999
+  color #fff
+  div 
+    margin-top 0.14rem
 </style>

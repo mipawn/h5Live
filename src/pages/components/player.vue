@@ -37,6 +37,7 @@ export default {
         rePlay: false,
         playsinline: true,
         preload: true,
+        cover: this.details.img_src,
         controlBarVisibility: 'click',
         useH5Prism: true,
         skinLayout:[ //按钮UI
@@ -47,15 +48,10 @@ export default {
                         ]}
         ],
         components: [
-        // {
-        //   name: 'StartADComponent',
-        //   type: AliPlayerComponent.StartADComponent,
-        //   args: []
-        // }, 
         {
           name: 'PauseADComponent',
           type: AliPlayerComponent.PauseADComponent,
-          args: ['http://h5.xianghunet.com/live/static/img/ad-video.jpg']
+          args: ['http://h5.xianghunet.com/live/static/img/ad-video.jpg', 'https://a.app.qq.com/o/simple.jsp?pkgname=com.wisexs.xstv']
         }
         ]
       })
@@ -77,7 +73,7 @@ export default {
           if (this.type == 1) { // 图文直播判断倒计时
             this.isLive = true
             let timeNow = new Date().getTime() // 当前时间戳
-            let startTime = new Date(res.data.data.start_time).getTime() // 直播开始时间戳
+            let startTime = new Date(res.data.data.start_time.replace(/-/g, "/")).getTime() // 直播开始时间戳
             let playTime = startTime - timeNow // 距离直播的时间
             if (playTime > 0) {
               this.playTime = false
@@ -96,19 +92,22 @@ export default {
                   this.playCountDown = 0
                   this.playTime = true
                   this.type = 2
-                  sessionStorage.playCountDown = ''
+                  sessionStorage.playCountDown = 0
                   this.$nextTick(() => {
                     this.init() // 加载播放器
                   })
                 }
               },1000)
-            } else {
+            } else if(playTime > 1000) {
               sessionStorage.playCountDown = ''
               this.playTime = true
               this.source = res.data.data.live_src
               this.$nextTick(() => {
                 this.init() // 加载播放器
               })
+            } else {
+               sessionStorage.playCountDown = ''
+                this.playTime = false
             }
           } else if(this.type == 3) { // 重播
             this.isLive = false
@@ -121,7 +120,7 @@ export default {
             this.source = res.data.data.live_src
             this.playCountDown = 0
             this.playTime = true
-            sessionStorage.playCountDown = ''
+            sessionStorage.playCountDown = 0
             this.$nextTick(() => {
               this.init() // 加载播放器
             })
@@ -136,11 +135,9 @@ export default {
     this.id = this.$route.query.id
     this.getDetails()
     this.isLive = this.type == 2 ? true : false
-    sessionStorage.playId = this.id
   },
   beforeRouteLeave (to, from, next) {
     sessionStorage.playTime = ''
-    sessionStorage.playId = this.id
     next()
   },
 }

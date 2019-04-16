@@ -29,7 +29,8 @@ export default {
       id: '',
       commentList: [], // 评论列表
       uid: -1000,
-      emojiList: [] // 表情库
+      emojiList: [], // 表情库
+      details: ''// 详情
     }
   },
   methods: {
@@ -117,6 +118,26 @@ export default {
         let className = 'qqface' + i
         this.emojiList.push({'className': className, 'title': emojiTitle[i].zh_CN})
       }
+    },
+    getDetails () {
+       this.$axios({
+        url: this.baseUrl+'v1/live/details',
+        params: {
+          id: this.id
+        },
+        method: 'get'
+      }).then(res => {
+         if (res.data.code === 200) {
+           this.details = res.data.data
+         }
+      })
+    },
+    HTMLDecode(html) { // 转义
+      var temp = document.createElement("div")
+      temp.innerHTML = html
+      var output = temp.innerText || temp.textContent
+      temp = null
+      return output
     }
   },
   mounted () {
@@ -125,6 +146,7 @@ export default {
       this.uid = window.PalauAPI.user.userInfo().uid || -1000
     }
     this.getComment()
+    this.getDetails()
     this.setEmojiList()
     this.$axios({
           url: 'http://h5.xianghunet.com/wx/wx_Signature.php',
@@ -139,7 +161,7 @@ export default {
                 var news_title = document.title
                 var news_link = location.href
                 var news_image = this.details.img_src
-                var news_intro = "活动直播"
+                var news_intro = this.HTMLDecode(this.details.introduce)
                 wx.onMenuShareAppMessage({
                 title: news_title,
                 desc: news_intro,

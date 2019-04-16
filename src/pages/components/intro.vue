@@ -27,6 +27,13 @@ export default {
       }).catch(err => {
         console.log(err)
       })
+    },
+    HTMLDecode(html) { // 转义
+      var temp = document.createElement("div")
+      temp.innerHTML = html
+      var output = temp.innerText || temp.textContent
+      temp = null
+      return output
     }
   },
   mounted () {
@@ -45,7 +52,7 @@ export default {
                 var news_title = document.title
                 var news_link = location.href
                 var news_image = this.details.img_src
-                var news_intro = "活动直播"
+                var news_intro = this.HTMLDecode(this.details.introduce)
                 wx.onMenuShareAppMessage({
                 title: news_title,
                 desc: news_intro,
