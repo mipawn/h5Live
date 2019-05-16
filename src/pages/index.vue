@@ -37,7 +37,8 @@ export default {
         }
     },
     mounted () {
-        document.title = '现场直播'
+        console.log(this.$route)
+          document.title = '现场直播'
           if (navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
             const hack = document.createElement('iframe')
             hack.style.display = 'none'
