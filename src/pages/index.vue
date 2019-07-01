@@ -20,7 +20,7 @@ export default {
     },
     methods: { 
         toDetail (id) { // 查看详情
-            this.$router.push({path: '/home/live', query:{id:id}})
+            this.$router.push({path: '/home/intro', query:{id:id}})
         },
         getList () { // 获取列表
             this.$axios({
