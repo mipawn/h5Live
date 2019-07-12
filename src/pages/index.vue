@@ -260,15 +260,16 @@ export default {
     //时间格式
     setWeek(time){ // 设置星期 time为 object
       let key = Object.keys(time)
+      console.log(key)
       time[key[0]].week = '今天'
       time[key[1]].week = '明天'
       time[key[2]].week = '后天'
       let date = new Date()
       let weekday = date.getDay() //今天是星期几
-      time[key[3]].week = weekday + 3 > 6? weekday + 3 - 6:weekday + 3
-      time[key[4]].week = weekday + 4 > 6? weekday + 4 - 6:weekday + 4
-      time[key[5]].week = weekday + 5 > 6? weekday + 5 - 6:weekday + 5
-      time[key[6]].week = weekday + 6 > 6? weekday + 6 - 6:weekday + 6
+      time[key[3]].week = weekday + 3 > 6? weekday + 3 - 7:weekday + 3
+      time[key[4]].week = weekday + 4 > 6? weekday + 4 - 7:weekday + 4
+      time[key[5]].week = weekday + 5 > 6? weekday + 5 - 7:weekday + 5
+      time[key[6]].week = weekday + 6 > 6? weekday + 6 - 7:weekday + 6
       for (let key in time) {
         if (time[key].week === 0) {
           time[key].week = '周日'
