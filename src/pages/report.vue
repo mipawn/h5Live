@@ -26,7 +26,7 @@ export default {
       if (navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
         const hack = document.createElement('iframe')
         hack.style.display = 'none'
-        hack.src = '/index.html? r =' + Math.random()
+        hack.src = './index.html'
         document.body.appendChild(hack)
         setTimeout(() => {
           document.body.removeChild(hack)
@@ -34,10 +34,16 @@ export default {
       }
     },
     goDetails (id) {
-      this.$toast({
-        message: '课程报名于9月2日13:00开始，敬请期待',
+      let timeNow = new Date().getTime()
+      let timeClose = 1567785600000
+      if (timeNow >= timeClose) {
+        this.$toast({
+        message: '报名通道已关闭',
         mask: true
       })
+      } else {
+        window.open('http://wjx.wangluoju.cn/jq/44657869.aspx')
+      }
     },
     getInfo () {
       return Promise.resolve(this.$route.query)

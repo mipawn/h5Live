@@ -30,7 +30,7 @@ export default {
       if (navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
         const hack = document.createElement('iframe')
         hack.style.display = 'none'
-        hack.src = '/index.html? r =' + Math.random()
+        hack.src = './index.html? r =' + Math.random()
         document.body.appendChild(hack)
         setTimeout(() => {
           document.body.removeChild(hack)

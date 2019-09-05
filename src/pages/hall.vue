@@ -67,7 +67,7 @@ export default {
       if (navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
         const hack = document.createElement('iframe')
         hack.style.display = 'none'
-        hack.src = '/index.html? r =' + Math.random()
+        hack.src = './index.html'
         document.body.appendChild(hack)
         setTimeout(() => {
           document.body.removeChild(hack)
@@ -84,7 +84,7 @@ export default {
       this.$router.push({name: 'house'})
     },
     goList (id, name) {
-      if (id == 13494 || id == 13491 || id == 14272) {
+      if (id == 13494 || id == 13491 || id == 14272 || id == 13490) {
         this.$router.push({name: 'list', query: {categoryid: id, name: name}})
         return
       }

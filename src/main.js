@@ -4,12 +4,9 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
-import qs from 'qs'
-// import ElementUI from 'element-ui'
-
 import './assets/js/rem.js'
 
-import 'element-ui/lib/theme-chalk/index.css'
+// import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/reset.css'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 
@@ -26,7 +23,6 @@ Vue.use(Toast)
 Vue.use(Icon)
 Vue.use(VueAwesomeSwiper)
 Vue.prototype.$http = service
-Vue.prototype.$qs = qs
 
 Vue.config.productionTip = false
 

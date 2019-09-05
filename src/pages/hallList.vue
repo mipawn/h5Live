@@ -41,7 +41,7 @@ export default {
       if (navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
         const hack = document.createElement('iframe')
         hack.style.display = 'none'
-        hack.src = '/index.html? r =' + Math.random()
+        hack.src = './index.html'
         document.body.appendChild(hack)
         setTimeout(() => {
           document.body.removeChild(hack)
@@ -72,9 +72,10 @@ export default {
     setIntro () {
       if (this.id === 13489) {
         this.intro = '为深入贯彻习近平新时代中国特色社会主义思想和党的十九大精神，紧贴市委、市政府“干好一一六，当好排头兵” 决策部署， 加快落实新区建设发展要求，深化实施职工素质提升工程，根据市总工会《关于开展2019年资助千名优秀外来务工人员上大学活动 的通知》 （杭总工办〔2019〕17号）文件要求，区总工会2019年继续开展资助优秀外来务工人员上大学活动。'
-      } else if (this.id === 13490) {
-        this.intro = '为贯彻落实习近平新时代中国特色社会主义思想和党的十九大精神，深化“中国梦·劳动美”主题教育活动，提升打造职工队伍的综合素质，促进职工队伍的精神文明建设。区总工会组织开办新区“钱塘职工大讲堂”。'
-      }
+      } 
+      // else if (this.id === 13490) {
+      //   this.intro = '为贯彻落实习近平新时代中国特色社会主义思想和党的十九大精神，深化“中国梦·劳动美”主题教育活动，提升打造职工队伍的综合素质，促进职工队伍的精神文明建设。区总工会组织开办新区“钱塘职工大讲堂”。'
+      // }
       else if (this.id === 13491) {
         this.intro = ''
       }
