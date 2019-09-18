@@ -72,7 +72,7 @@ export default {
             pid: 0,
             content: content,
             nickname: this.userInfo.nickName,
-            tel: this.userInfo.phoneNumber
+            tel: this.userInfo.userName
           }),
           method: 'post'
         }).then(res => {

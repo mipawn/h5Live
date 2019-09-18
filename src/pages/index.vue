@@ -20,7 +20,7 @@ export default {
     },
     methods: { 
         toDetail (id) { // 查看详情
-            this.$router.push({path: '/home/intro', query:{id:id}})
+          this.$router.push({path: '/home/intro', query:{id:id}})
         },
         getList () { // 获取列表
             this.$axios({
@@ -37,12 +37,11 @@ export default {
         }
     },
     mounted () {
-        console.log(this.$route)
           document.title = '现场直播'
           if (navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
             const hack = document.createElement('iframe')
             hack.style.display = 'none'
-            hack.src = '@/assets/fixIosTitle.html? r =' + Math.random()
+            hack.src = './static/index.html'
             document.body.appendChild(hack)
             setTimeout(() => {
               document.body.removeChild(hack)

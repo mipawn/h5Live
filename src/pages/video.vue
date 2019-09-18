@@ -46,7 +46,6 @@ export default {
         method: 'get'
       }).then(res => {
         if (res.data.code === 200) {
-          console.log(res.data.data.type)
           this.img = res.data.data.pc_img
           this.poster = res.data.data.img_src
           this.type = res.data.data.type
@@ -59,9 +58,13 @@ export default {
           } else if(this.type == 3){
             this.isLive = false
             this.src = res.data.data.vod_url
-            this.$nextTick(() => {
-              this.init()
-            })
+            if (this.src !== '') {
+              this.$nextTick(() => {
+                this.src = res.data.data.vod_url
+                this.init()
+              })
+            }
+            
           }
           document.title = res.data.data.title
         }

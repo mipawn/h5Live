@@ -69,6 +69,11 @@ export default {
       }).then(res => {
         if (res.data.code === 200) {
           this.details = res.data.data
+          if (res.data.data.vod_url === '') {
+            this.type = 1
+            this.details.img_src = 'http://h5.xianghunet.com/live/static/img/wait.jpg'
+            return
+          }
           this.type = res.data.data.type
           if (this.type == 1) { // 图文直播判断倒计时
             this.isLive = true

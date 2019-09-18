@@ -14,7 +14,7 @@
     <section v-if="downCount == 0" @click="closePackage">
       <div class="nav">
         <ul>
-          <li :class="{active:idx===index}" v-for="(item, index) of list" :key="index" @click="goto(item.path, index)">
+          <li :class="{active:idx===index}"  v-for="(item, index) of list" :key="index" @click="goto(item.path, index)">
             {{item.name}}
           </li>
         </ul>
@@ -47,10 +47,10 @@ export default {
           name: '互动聊天',
           path: 'chat'
         },
-        // {
-        //   name: '图文直播',
-        //   path: 'live'
-        // },
+        {
+          name: '图文直播',
+          path: 'live'
+        },
         {
           name: '往期活动',
           path: 'ago'
@@ -63,7 +63,8 @@ export default {
       },
       userInfo: '', // 用户信息
       downCount: 2, // 开机动画时间 s
-      playCountDown : '' // 倒计时
+      playCountDown : '', // 倒计时
+      text_status: '' //图文直播开关
     }
   },
   methods: {
@@ -98,10 +99,27 @@ export default {
           this.details = res.data.data
           this.type = res.data.data.type
           document.title = res.data.data.title
+          this.text_status = res.data.data.text_status
+          if (res.data.data.text_status == 0) {
+            this.list = [ // 选项卡
+              {
+                name: '活动介绍',
+                path: 'intro'
+              },
+              {
+                name: '互动聊天',
+                path: 'chat'
+              },
+              {
+                name: '往期活动',
+                path: 'ago'
+              }
+            ]
+          }
           if (navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
             const hack = document.createElement('iframe')
             hack.style.display = 'none'
-            hack.src = '@/assets/fixIosTitle.html? r =' + Math.random()
+            hack.src = './static/index.html'
             document.body.appendChild(hack)
             setTimeout(() => {
               document.body.removeChild(hack)
@@ -191,7 +209,9 @@ export default {
       this.idx = 1
     } else if (this.$route.name === 'intro') {
       this.idx = 0
-    } else if (this.$route.name === 'ago') {
+    } else if (this.$route.name === 'ago' && this.text_status === 1) {
+      this.idx = 3
+    } else if (this.$route.name === 'ago' && this.text_status === 0) {
       this.idx = 2
     }
   }

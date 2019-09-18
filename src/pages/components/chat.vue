@@ -160,7 +160,7 @@ export default {
             wx.ready(() => {
                 var news_title = document.title
                 var news_link = location.href
-                var news_image = this.details.img_src
+                var news_image = this.details.img_src || 'http://h5.xianghunet.com/live/static/img/logo.jpg'
                 var news_intro = this.HTMLDecode(this.details.introduce)
                 wx.onMenuShareAppMessage({
                 title: news_title,
