@@ -12,7 +12,7 @@
           </div>
         </div>
         <div class="right">
-          <div class="share" @click="doShare" v-if="uid !== -1000">
+          <div class="share" @click="doShare" v-if="app">
             <i class="iconfont icon-share"></i>
           </div>
           <div class="emoji" @click="showPackage">
@@ -42,7 +42,8 @@ export default {
       userInfo: '', // 用户信息
       id: '' ,
       uid: -1000,
-      adFooter: false // 底部广告
+      adFooter: false, // 底部广告
+      app: false
     }
   },
   props: {
@@ -108,9 +109,16 @@ export default {
         })
       }
     },
+    HTMLDecode(html) { // 转义
+      var temp = document.createElement("div")
+      temp.innerHTML = html
+      var output = temp.innerText || temp.textContent
+      temp = null
+      return output
+    },
     doShare () { // 分享
       if (window.SZJSBridge) {
-        window.PalauAPI.share('all',this.details.title.toString(),this.details.introduce,window.location.href,this.details.img_src, res => {
+        window.PalauAPI.share('all',this.details.title.toString(),this.HTMLDecode(this.details.introduce),window.location.href,this.details.img_src, res => {
           if (res == 0) {
             this.$message({
               message: '分享失败',
@@ -165,6 +173,7 @@ export default {
     },
   },
   mounted () {
+    window.SZJSBridge ? this.app = true : this.app = false
     this.id = this.$route.query.id
     this.setEmojiList()
     this.getUserInfo()

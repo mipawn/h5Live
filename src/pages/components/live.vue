@@ -12,20 +12,17 @@
             <i :class="['iconfont', 'icon-good', item.like_num && item.like_num.length? 'hot': '']" @click="likeUp(index)"></i>
           </div>
         </div>
-        <div class="create-time">{{item.create_at}}</div>
+        <div class="create-time">{{item.release_at}}</div>
       </header>
       <section v-html="item.content" class="text-desc"></section>
-      <div class="live-photo" v-if="item.media_type == 1 && item.figure && item.figure.length < 2">
-        <img :src="itemChild" alt="" v-for="(itemChild, indexChild) in item.figure" :key="indexChild" @click="showFullScreen(itemChild)">
+      <div class="live-photo" v-if="item.media_type == 1 && item.figure && item.figure.length < 2" >
+        <img :src="itemChild" alt="" v-for="(itemChild, indexChild) in item.figure" :key="indexChild" @click="showFullScreen(0, item.figure)">
       </div>
       <div class="live-photo-line" v-else-if="item.media_type == 1 && item.figure &&item.figure.length > 1 && item.figure.length < 4">
-        <img :src="itemChild" alt="" v-for="(itemChild, indexChild) in item.figure" :key="indexChild" @click="showFullScreen(itemChild)">
+        <img :src="itemChild" alt="" v-for="(itemChild, indexChild) in item.figure" :key="indexChild" @click="showFullScreen(indexChild, item.figure)">
       </div>
       <div class="live-photo-more" v-else-if="item.media_type == 1 && item.figure &&item.figure.length > 3">
-        <img :src="itemChild" alt="" v-for="(itemChild, indexChild) in item.figure" :key="indexChild" @click="showFullScreen(itemChild)">
-        <div id="fullScreen-photo"  v-if="fullScreen" @click="showFullScreen">
-          <img :src="fullScreenPhoto" alt="">
-        </div>
+        <img :src="itemChild" alt="" v-for="(itemChild, indexChild) in item.figure" :key="indexChild" @click="showFullScreen(indexChild, item.figure)">
       </div>
       <div v-else-if="item.media_type == 3" class="live-photo" style="height:1rem;">
         <audio :src="item.audio_src" controls="controls"></audio>
@@ -38,6 +35,7 @@
 </template>
 
 <script>
+import { ImagePreview } from 'vant'
 export default {
   name: 'live',
   data () {
@@ -47,9 +45,6 @@ export default {
       type: '',
       details: '',
       uid: -1000,
-      fullScreenPhoto: '', //全屏展示的图片
-      fullScreen: false, // 全屏展示图片开关
-
     }
   },
   methods: {
@@ -104,6 +99,7 @@ export default {
             if (item.figure && item.figure.length > 6) {
               item.figure.length = 6
             }
+
             return item
           })
           this.broadcastList = broadcastList
@@ -137,9 +133,11 @@ export default {
         this.uid = window.PalauAPI.user.userInfo().uid || -1000
       }
     },
-    showFullScreen (image) { // 全屏展示图文
-      this.fullScreenPhoto = image
-      this.fullScreen = !this.fullScreen
+    showFullScreen (index, list) { // 全屏展示图文
+      ImagePreview({
+        images: list,
+        startPosition: index,
+      });
     },
     HTMLDecode(html) { // 转义
       var temp = document.createElement("div")
@@ -251,6 +249,7 @@ export default {
   img 
     width 100%
     height 100%
+    object-fit cover
   video 
     width 100%
     height 100%
@@ -358,14 +357,19 @@ export default {
   background: rgba(0, 0, 0, 0.3);
 }
 #fullScreen-photo >img {
-  width: auto;
+  /* width: auto; */
   object-fit: contain;
+  width: 100%;
+  /* height: 100%; */
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   margin: auto;
+}
+.box:last-child {
+  margin-bottom: 1rem;
 }
 </style>
 

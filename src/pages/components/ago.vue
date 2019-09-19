@@ -65,6 +65,7 @@ export default {
     }
   },
   mounted () {
+    console.log(111)
     this.id = this.$route.query.id
     this.getList()
     this.getDetails()

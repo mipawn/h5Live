@@ -9,16 +9,18 @@ import JSBridge from './assets/js/SZJSBridge'
 import axios from 'axios'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import { ImagePreview } from 'vant'
+import 'vant/lib/index.css'
+
 import qs from 'qs'
-// import fastclick from 'fastclick'
 
 Vue.use(JSBridge)
 Vue.use(ElementUI)
+Vue.use(ImagePreview)
 const baseUrl = 'http://admin.wisexs.com/'
 Vue.prototype.baseUrl = baseUrl
 Vue.prototype.$axios = axios
 Vue.prototype.$qs = qs
-// fastclick.attach(document.body)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

@@ -69,7 +69,7 @@ export default {
       }).then(res => {
         if (res.data.code === 200) {
           this.details = res.data.data
-          if (res.data.data.vod_url === '') {
+          if (res.data.data.vod_url === '' && res.data.data.type == 3) {
             this.type = 1
             this.details.img_src = 'http://h5.xianghunet.com/live/static/img/wait.jpg'
             return

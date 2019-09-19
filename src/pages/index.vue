@@ -1,7 +1,7 @@
 <template>
     <div class="content">
         <div class="section" v-for="(item,index) in list" :key="index">
-            <div class="home-item-photo" @click="toDetail(item.id,item.type)">
+            <div class="home-item-photo" @click="toDetail(item.id,item.text_status)">
                 <img :src="item.list_img" alt="网络不好呢">
             </div>
             <div class="home-item-desc">
@@ -19,8 +19,13 @@ export default {
         }
     },
     methods: { 
-        toDetail (id) { // 查看详情
-          this.$router.push({path: '/home/intro', query:{id:id}})
+        toDetail (id, text_status) { // 查看详情
+          if(text_status == 1) {
+            this.$router.push({path: '/home/live', query:{id:id}})
+          } else {
+              this.$router.push({path: '/home/intro', query:{id:id}})
+          }
+          
         },
         getList () { // 获取列表
             this.$axios({

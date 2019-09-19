@@ -229,7 +229,7 @@ export default {
   bottom 0
   overflow-y auto
   .ad
-    height 1.6rem
+    height .7rem
     background url(../assets/imgs/ad-bg.png) no-repeat
     background-size cover
     display flex
@@ -239,10 +239,9 @@ export default {
     align-items center
     position relative
     img 
-      height 1rem
-      max
+      height .4rem
   header
-    padding-top 56%
+    padding-top 45%
     height 0 !important
     border-bottom 1px solid #dddddd
     position relative
@@ -252,7 +251,7 @@ export default {
     overflow hidden
     display flex
     flex-direction column
-    padding-bottom .8rem
+    padding-bottom 0.6rem
     .nav
       ul
         display flex
@@ -297,10 +296,10 @@ export default {
   flex-direction column
   box-sizing border-box
   justify-content  flex-end
-  height 1rem
-  font-size 0.3rem
-  z-index 999
+  height .6rem
+  font-size 0.2rem
+  z-index 100
   color #fff
   div 
-    margin-top 0.14rem
+    margin-top 0.04rem
 </style>
