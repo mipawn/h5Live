@@ -252,8 +252,6 @@ export default {
     width: 30px;
     height: 30px;
     font-size: 0;
-    /* border-bottom: 1px solid #f0f0f0; */
-    /* border-right: 1px solid #f0f0f0; */
     cursor: pointer;
 }
 .qq_face .qqface0 {

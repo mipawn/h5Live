@@ -246,6 +246,8 @@ div.footer-hide
         flex 1
         overflow hidden
         box-sizing border-box
+        position static
+        transform none
         .sketch
           color #f33
         .input

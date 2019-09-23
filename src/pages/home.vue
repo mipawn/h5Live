@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home video">
     <img v-if="details.window_status == 1 && downCount > 0" :src="details.window_src" alt="" class="hello" @click="closePackage">
     <div class="ad" v-if="downCount == 0">
       <img src="../assets/imgs/ad-text.png" alt="">
@@ -7,7 +7,7 @@
         <div>{{details.liveClick}}</div>
       </div>
     </div>
-    <header id="live" v-if="downCount == 0" @click="closePackage" style="position:relative;">
+    <header :id="type !==1 ? 'live' : ''" v-if="downCount == 0" @click="closePackage" style="position:relative;">
       <player></player>
       <div class="playCountDown" v-if="playCountDown && type == 1" @click="closePackage">{{playCountDown}}</div>
     </header>
@@ -40,6 +40,10 @@ export default {
       idx: 0,
       list: [ // 选项卡
         {
+          name: '图文直播',
+          path: 'live'
+        },
+        {
           name: '活动介绍',
           path: 'intro'
         },
@@ -47,10 +51,7 @@ export default {
           name: '互动聊天',
           path: 'chat'
         },
-        {
-          name: '图文直播',
-          path: 'live'
-        },
+        
         {
           name: '往期活动',
           path: 'ago'
@@ -203,17 +204,26 @@ export default {
       },1000)
   },
   updated () { // 修改过
-    if(this.$route.name === 'live') {
-      this.idx = 2
-    } else if (this.$route.name === 'chat') {
-      this.idx = 1
-    } else if (this.$route.name === 'intro') {
+    if (this.text_status === 1) {
+      if(this.$route.name === 'live') {
       this.idx = 0
-    } else if (this.$route.name === 'ago' && this.text_status === 1) {
-      this.idx = 3
-    } else if (this.$route.name === 'ago' && this.text_status === 0) {
-      this.idx = 2
+      } else if (this.$route.name === 'chat') {
+        this.idx = 2
+      } else if (this.$route.name === 'intro') {
+        this.idx = 1
+      } else if (this.$route.name === 'ago' ) {
+        this.idx = 3
+      }
+    } else {
+      if (this.$route.name === 'chat') {
+        this.idx = 1
+      } else if (this.$route.name === 'intro') {
+        this.idx = 0
+      } else if (this.$route.name === 'ago' ) {
+        this.idx = 2
+      }
     }
+    
   }
 }
 </script>
@@ -302,4 +312,10 @@ export default {
   color #fff
   div 
     margin-top 0.04rem
+</style>
+
+<style lang="css" scoped>
+  #live {
+    padding-top: 56%;
+  }
 </style>

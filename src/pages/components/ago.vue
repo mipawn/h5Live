@@ -39,8 +39,8 @@ export default {
       })
     },
     toDetail (id) { // 查看详情
-      this.$router.push({path: '/home/live', query:{id:id}})
-      this.$emit('goLive',this.$route.query)
+      this.$router.push({path: '/home/intro', query:{id:id}})
+      // this.$emit('goLive',this.$route.query)
       window.location.reload()
     },
     getDetails () {
@@ -65,7 +65,6 @@ export default {
     }
   },
   mounted () {
-    console.log(111)
     this.id = this.$route.query.id
     this.getList()
     this.getDetails()

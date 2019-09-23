@@ -1,11 +1,4 @@
 <template>
-  <!-- <video src="https://xsgbdst.oss-cn-shanghai.aliyuncs.com/zhxs/20170512mqjjfjx.mp4" id="player" autoplay controls 
-  preload="auto" 
-  webkit-playsinline="true" 
-  playsinline="true"
-  x5-video-player-type="h5" 
-  x5-video-player-fullscreen="portraint" onerror="window.VIDEO_FAILED=1"
-  :poster="details.live_src"></video> -->
   <img :src="details.img_src" alt="" v-if="type == 1" id="poster">
   <img :src="details.video_img_src" alt="" v-else-if="playTime == false" id="poster">
   <div id="player" v-else-if="playTime"></div>
@@ -40,24 +33,19 @@ export default {
         cover: this.details.img_src,
         controlBarVisibility: 'click',
         useH5Prism: true,
-        skinLayout:[ //按钮UI
-                {"name":"controlBar","align":"blabs","x":0,"y":0,"children":[{"name":"progress","align":"blabs","x":0,"y":44},
-                        {"name":"playButton","align":"tl","x":15,"y":12},//播放
-                        {"name":"volume","align":"tr","x":10,"y":10},//声音
-                        {"name":"fullScreenButton","align":"tr","x":10,"y":10},
-                        ]}
-        ],
-        components: [
-        {
-          name: 'PauseADComponent',
-          type: AliPlayerComponent.PauseADComponent,
-          args: ['http://h5.xianghunet.com/live/static/img/ad-video.jpg', 'https://a.app.qq.com/o/simple.jsp?pkgname=com.wisexs.xstv']
-        }
-        ]
+        // skinLayout:[ //按钮UI
+        //   {
+        //     "name":"controlBar","align":"blabs","x":0,"y":0,"children":[
+        //       {"name":"progress","align":"blabs","x":0,"y":44},
+        //       {"name":"playButton","align":"tl","x":15,"y":12},//播放
+        //       {"name":"volume","align":"tr","x":10,"y":10},//声音
+        //       {"name":"fullScreenButton","align":"tr","x":10,"y":10},
+        //     ]
+        //   }
+        // ],
+      }, (player) => {
+        // player.play()
       })
-      // player.on('cancelFullScreen', ()=> {
-        
-      // })
     },
     getDetails () { // 获取详情
       this.$axios({
@@ -125,6 +113,7 @@ export default {
             this.source = res.data.data.live_src
             this.playCountDown = 0
             this.playTime = true
+            this.isLive = true
             sessionStorage.playCountDown = 0
             this.$nextTick(() => {
               this.init() // 加载播放器
