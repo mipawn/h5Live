@@ -105,6 +105,7 @@ export default {
   /* border-radius: 50%; */
   overflow: hidden;
   flex-shrink: 0;
+  object-fit: cover;
 }
 .item div {
   height: 0.92rem;

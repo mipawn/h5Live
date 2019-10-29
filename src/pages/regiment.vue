@@ -94,6 +94,7 @@ export default {
   border-radius: 50%;
   overflow: hidden;
   flex-shrink: 0;
+  object-fit: cover;
 }
 .item span {
   margin-left: 0.55rem;

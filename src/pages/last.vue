@@ -3,12 +3,12 @@
     <ul>
       <li v-for="item of videoList" :key="item.id" @click="toDetail(item.id)">
         <div class="pre">
-          <img :src="require('@/assets/imgs/' + item.id + '.png')" />
+          <img :src="'http://o.cztvcloud.com/' + item.thumb" />
         </div>
         <div class="title">{{item.title}}</div>
         <div class="teacher">
-          <b>{{item.teacher}}</b>
-          <span><i class="iconfont icon-eye"></i> <b>{{item.num}}</b></span>
+          <b>{{item.sub_title}}</b>
+          <span><i class="iconfont icon-eye"></i> <b>{{item.hits}}</b></span>
         </div>
       </li>
     </ul>
@@ -35,21 +35,13 @@ export default {
       })
     },
     getList () {
-      let url = 'http://item.xianghunet.com/index/study/index'
-      let data = new FormData()
-      data.append('sort', 'new')
-      let config = {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-      axios.post(url, data, config)
-        .then(res => {
-          if (res.status === 200) {
-            // console.log(res)
-            this.videoList = res.data.res
-          }
-        })
+      let url = '/media/latest?category_id=16667&size=100&page=1&channel_id=6'
+      this.$http({
+        url: url,
+        method: 'get',
+      }).then(res => {
+        this.videoList = res.data.list
+      })
     }
   },
   mounted () {

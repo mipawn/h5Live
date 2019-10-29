@@ -1,14 +1,14 @@
 <template>
   <div class="detail">
     <div class="header">
-      <video :src="info.high" controls></video>
+      <video :src="'http://v.cztvcloud.com/' + info.files[0].path" controls></video>
     </div>
     <!-- <player :high="info.high"></player> -->
     <div class="content">
       <h1>{{info.title}}</h1>
       <div class="desc">
         <p>讲师介绍</p>
-        <p>{{info.teacher}}，{{info.desc}}</p>
+        <p>{{info.intro}}</p>
       </div>
     </div>
   </div>
@@ -27,25 +27,30 @@ export default {
   },
   methods: {
     getDetail (id) {
-      let url = 'http://item.xianghunet.com/index/study/details'
-      let data = new FormData()
-      data.append('id', id)
-      let config = {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+      this.$http({
+        url: '/media/video?terminal=web&channel_id=6&data_id=' + id,
+        method: 'get',
+      }).then(res => {
+        this.info = res.data
+        this.updateHit()
+      })
+    },
+    updateHit () {
+      this.$http({
+        url: 'http://c.cztvcloud.com/analysis/visit',
+        method: "POST",
+        data: {
+          channel_id: 6,
+          item_id: info.data_id,
+          title: info.title,
+          editor_id: editorId,
+          terminal: 1,
+          type: 3
         }
-      }
-      axios.post(url, data, config)
-        .then(res => {
-          if (res.status === 200) {
-            // console.log(res)
-            this.info = res.data.res
-          }
-        })
+      })
     }
   },
   mounted () {
-    // console.log(11111)
     this.getDetail(this.$route.query.id)
   }
 }

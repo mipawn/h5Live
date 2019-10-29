@@ -208,3 +208,10 @@ export default {
     margin: 0;
   }
 </style>
+
+<style>
+  .prism-player .prism-info-display {
+    padding-left: 0;
+    padding-right: 0;
+  }
+</style>

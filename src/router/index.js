@@ -136,6 +136,11 @@ export default new Router({
       path: '/report',
       name: 'report',
       component: () => import('@/pages/report.vue')
+    },
+    {
+      path: '/booklist',
+      name: 'bookList',
+      component: () => import('../pages/booklist.vue')
     }
   ]
 })

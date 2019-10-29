@@ -41,11 +41,7 @@ export default {
       this.$router.push({name: 'home'})
     },
     goBookList () {
-      // this.$router.push({name: 'bookList'})
-      this.$toast({
-        message: '正在开发中...',
-        mask: true
-      })
+      this.$router.push({name: 'bookList'})
     },
     goEbook () {
       window.location.href = 'http://bookstore.gh.chaoxing.com/wechat/home/list.shtml?unitId=10'
@@ -79,6 +75,7 @@ export default {
   overflow: hidden;
   flex-shrink: 0;
   background: #000;
+  object-fit: cover;
 }
 .item div {
   height: 0.92rem;

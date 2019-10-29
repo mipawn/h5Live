@@ -13,8 +13,9 @@ module.exports = {
     proxyTable: {
       "/": {
         target: 'http://d.cztvcloud.com',
-        // target: 'http://admin.wisexs.com',
         changeOrigin: true,
+        secure: false,
+
       }
     },
 

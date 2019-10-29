@@ -132,6 +132,7 @@ section {
 .item img {
   width: 1.193rem;
   height: 1.192rem;
+  object-fit: cover;
 }
 .item div {
   margin-top: 0.34rem;

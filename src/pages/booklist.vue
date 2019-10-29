@@ -17,27 +17,15 @@ export default {
       list: [],
       wrapHeight: 0,
       page: 0,
-      id: 13497
+      id: 13852
     }
   },
   methods: {
     setTitle () {
-      document.title = '其他'
-      if (navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
-        const hack = document.createElement('iframe')
-        hack.style.display = 'none'
-        hack.src = './index.html'
-        document.body.appendChild(hack)
-        setTimeout(() => {
-          document.body.removeChild(hack)
-        },300)
-      }
+      document.title = '荐书时光'
     },
     goDetails (id) {
-      this.$router.push({name: 'news',  query: {id: id}})
-    },
-    getInfo () {
-      return Promise.resolve(this.$route.query)
+      this.$router.push({name: 'news', query: {id: id}})
     },
     getList () {
       let page = this.page + 1
