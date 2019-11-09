@@ -213,6 +213,7 @@ export default {
   overflow-y auto
   .chat-list
     padding .2rem 0
+    margin-bottom 1rem
     li
       padding .1rem .4rem
       border-bottom 1px solid #dddddd
