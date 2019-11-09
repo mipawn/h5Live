@@ -73,7 +73,7 @@ export default {
             }),
             method: 'post'
           })
-        } else { // 在萧山app未登录
+        } else { // 在智慧萧山app未登录
           window.PalauAPI.user.login(() => {
             setTimeout(() => {
                 this.uid = window.PalauAPI.user.userInfo().uid
