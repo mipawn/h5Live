@@ -237,7 +237,6 @@ export default {
   left 0
   right 0
   bottom 0
-  overflow-y auto
   .ad
     height .7rem
     background url(../assets/imgs/ad-bg.png) no-repeat

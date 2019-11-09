@@ -33,19 +33,12 @@ export default {
         cover: this.details.img_src,
         controlBarVisibility: 'click',
         useH5Prism: true,
-        // skinLayout:[ //按钮UI
-        //   {
-        //     "name":"controlBar","align":"blabs","x":0,"y":0,"children":[
-        //       {"name":"progress","align":"blabs","x":0,"y":44},
-        //       {"name":"playButton","align":"tl","x":15,"y":12},//播放
-        //       {"name":"volume","align":"tr","x":10,"y":10},//声音
-        //       {"name":"fullScreenButton","align":"tr","x":10,"y":10},
-        //     ]
-        //   }
-        // ],
-      }, (player) => {
-        // player.play()
       })
+      if (this.isLive) {
+        player.on('pause', ()=> {
+          player.play()
+        })
+      }
     },
     getDetails () { // 获取详情
       this.$axios({
