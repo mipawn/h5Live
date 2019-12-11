@@ -120,7 +120,7 @@ export default {
   position: absolute;
   left: 0;
   right: 0;
-  top: 40%;
+  top: 31%;
   min-height:360px;
   margin: 0 auto;
   /* object-fit: contain; */
