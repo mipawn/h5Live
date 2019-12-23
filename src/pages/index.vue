@@ -113,6 +113,14 @@
       </table>
     </div>
     <div class="bg-top" style="text-align:center;padding:30px 0 0;">萧山天气数据由萧山气象台提供</div>
+    <footer>
+      <div>Copyright © xianghunet.com All Rights Reserved.</div>
+      <div><a href="http://www.xianghunet.com/" style="color: #fff;">杭州市萧山广播电视台</a>&nbsp;&nbsp;&nbsp;  版权所有</div>
+      <div>
+        <a href="http://www.beian.miit.gov.cn" style="color: #fff;">浙ICP备15010528号</a>
+        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?spm=5176.12825654.7y9jhqsfz.111.e9392c4aPLy33H&aly_as=qc8yaihS" style="color: #fff;">浙公网安备 33010902000230号</a>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -393,3 +401,10 @@ export default {
 }
 </script>
 
+<style lang="css">
+footer div {
+  font-size: 12px;
+  text-align: center;
+  padding: 3px 0;
+}
+</style>
