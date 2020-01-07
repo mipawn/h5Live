@@ -46,17 +46,21 @@ export default {
         if (res.data.code == 200) {
           let commentList = res.data.data
           for (let item in commentList) {
-           commentList[item].content = this.handleEmoji(commentList[item].content)
+            commentList[item].content = this.handleEmoji(commentList[item].content)
+            let arrEntities = {'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"'}
+            commentList[item].content = commentList[item].content.replace(/&(lt|gt|nbsp|amp|quot);/ig, function (all, t) {
+              return arrEntities[t]
+            })
           }
           this.commentList = commentList
         }
       }).catch(err => {
-          console.log(err)
+        console.log(err)
       })
     },
     likeUp (index) { // 点赞
       if (window.SZJSBridge) { // 是否在萧山app
-        if(window.PalauAPI.user.userInfo().uid) { // 在萧山app已登陆
+        if (window.PalauAPI.user.userInfo().uid) { // 在萧山app已登陆
           if (this.commentList[index].like_num.length) {
             this.commentList[index].like_num.length = 0
             this.commentList[index].like_num_count = this.commentList[index].like_num_count - 1
@@ -76,9 +80,9 @@ export default {
         } else { // 在智慧萧山app未登录
           window.PalauAPI.user.login(() => {
             setTimeout(() => {
-                this.uid = window.PalauAPI.user.userInfo().uid
-                this.getComment()
-            }, 100);
+              this.uid = window.PalauAPI.user.userInfo().uid
+              this.getComment()
+            }, 100)
           })
         }
       } else { // 在微信
@@ -120,19 +124,19 @@ export default {
       }
     },
     getDetails () {
-       this.$axios({
+      this.$axios({
         url: this.baseUrl+'v1/live/details',
         params: {
           id: this.id
         },
         method: 'get'
       }).then(res => {
-         if (res.data.code === 200) {
-           this.details = res.data.data
-         }
+        if (res.data.code === 200) {
+          this.details = res.data.data
+        }
       })
     },
-    HTMLDecode(html) { // 转义
+    HTMLDecode (html) { // 转义
       var temp = document.createElement("div")
       temp.innerHTML = html
       var output = temp.innerText || temp.textContent
