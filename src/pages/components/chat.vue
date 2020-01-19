@@ -21,10 +21,10 @@
 
 <script>
 import emojiTitle from '../../assets/js/emoji.js'
-import emoji from '../../assets/js/emoji.js';
+import emoji from '../../assets/js/emoji.js'
 export default {
   name: 'chat',
-  data() {
+  data () {
     return {
       id: '',
       commentList: [], // 评论列表
@@ -153,60 +153,60 @@ export default {
     this.getDetails()
     this.setEmojiList()
     this.$axios({
-          url: 'http://h5.xianghunet.com/wx/wx_Signature.php',
-          data: this.$qs.stringify({
-            href: window.location.href
-          }),
-          method: 'post'
-        }).then(res => {
-            res.data.jsApiList = ['onMenuShareAppMessage', 'onMenuShareTimeline']
-            wx.config(res.data)
-            wx.ready(() => {
-                var news_title = document.title
-                var news_link = location.href
-                var news_image = this.details.img_src || 'http://h5.xianghunet.com/live/static/img/logo.jpg'
-                var news_intro = this.HTMLDecode(this.details.introduce)
-                wx.onMenuShareAppMessage({
-                title: news_title,
-                desc: news_intro,
-                link: news_link,
-                imgUrl: news_image,
-                success () {
-                  this.$message({
-                    message: '分享成功',
-                    type: 'success',
-                    center: true
-                  })
-                },
-                fail () {
-                    this.$message({
-                        message: '分享失败',
-                        type: 'warning',
-                        center: true
-                    })
-                }
-                })
-                wx.onMenuShareTimeline({
-                    title: news_title,
-                    link: news_link,
-                    imgUrl: news_image,
-                    success () {
-                    this.$message({
-                        message: '分享成功',
-                        type: 'success',
-                        center: true
-                    })
-                    },
-                    fail () {
-                        this.$message({
-                            message: '分享失败',
-                            type: 'warning',
-                            center: true
-                        })
-                    }
-                })
-            })  
+      url: 'http://h5.xianghunet.com/wx/wx_Signature.php',
+      data: this.$qs.stringify({
+        href: window.location.href
+      }),
+      method: 'post'
+    }).then(res => {
+      res.data.jsApiList = ['onMenuShareAppMessage', 'onMenuShareTimeline']
+      wx.config(res.data)
+      wx.ready(() => {
+        var news_title = document.title
+        var news_link = location.href
+        var news_image = this.details.img_src || 'http://h5.xianghunet.com/live/static/img/logo.jpg'
+        var news_intro = this.HTMLDecode(this.details.introduce)
+        wx.onMenuShareAppMessage({
+          title: news_title,
+          desc: news_intro,
+          link: news_link,
+          imgUrl: news_image,
+          success () {
+            this.$message({
+              message: '分享成功',
+              type: 'success',
+              center: true
+            })
+          },
+          fail () {
+            this.$message({
+              message: '分享失败',
+              type: 'warning',
+              center: true
+            })
+          }
         })
+        wx.onMenuShareTimeline({
+          title: news_title,
+          link: news_link,
+          imgUrl: news_image,
+          success () {
+            this.$message({
+              message: '分享成功',
+              type: 'success',
+              center: true
+            })
+          },
+          fail () {
+            this.$message({
+              message: '分享失败',
+              type: 'warning',
+              center: true
+            })
+          }
+        })
+      })
+    })
   }
 }
 </script>
@@ -215,6 +215,7 @@ export default {
 .chat
   line-height 1.5
   overflow-y auto
+  -webkit-overflow-scrolling: touch
   .chat-list
     padding .2rem 0
     margin-bottom 1rem
@@ -237,13 +238,14 @@ export default {
 .hot
   color red
 </style>
+
 <style scoped>
 .qq_face {
   width: 100%;
   overflow: hidden;
   white-space:normal;
   word-break:break-all;
-  word-wrap:break-word; 
+  word-wrap:break-word;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
