@@ -5,7 +5,7 @@
         <img :src="item.list_img" alt="">
       </div>
       <div class="item-desc">
-        <div class="item-title">{{item.title}}</div>
+        <div class="item-title" style="-webkit-box-orient: vertical;">{{item.title}}</div>
         <div class="item-info">
           <div class="item-time">{{item.start_time}}</div>
           <div class="item-num">{{item.live_click.click_num}}人次</div>
@@ -162,11 +162,13 @@ export default {
   .item-title {
     font-size: 0.32rem;
     display: -webkit-box;
-    -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
+    text-overflow: ellipsis;
     word-wrap: break-word;
     line-height: 1.2;
+    /* autoprefixer: ignore next */
+    -webkit-box-orient: vertical;
   }
   .item-time {
     font-size: 0.2rem;
